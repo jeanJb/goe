@@ -1,6 +1,6 @@
 # GOE (Gestión de Observadores Estudiantil)
 
-Bienvenido al repositorio del proyecto GOE (Gestión de Observadores Estudiantil), desarrollado por DEVEXCEL. Este aplicativo web está diseñado para facilitar la gestión y organización de la observación estudiantil, mejorando la eficiencia en la gestión de información, la comunicación entre actores educativos y la toma de decisiones en instituciones educativas.
+
 
 ## Tabla de Contenidos
 
