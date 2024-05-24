@@ -1,0 +1,57 @@
+/*DIV PERFIL*/
+.perfil{
+    width: 100%;
+    margin: 30px auto;
+    height: 45vh;
+    padding: 20px;
+    background-color: #454e59;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil .pp{
+    width: 25%;
+    height: 100%;
+    padding: 20px;
+}
+
+.perfil .pp h2{
+    margin: 10px 0;
+}
+
+.perfil .pp .img{
+    width: 100%;
+    height: 50%;
+    border-bottom: black 1px solid;
+    padding: 10px;
+}
+
+.perfil .pp .img img{
+    width: 60%;
+    height: 100%;
+    border-radius: 80%;
+    margin: 0 20%;
+}
+
+/*DIV MATERIA*/
+.materia{
+    width: 49%;
+    float: left;
+    height: 45vh;
+    padding: 20px;
+    margin-right: 2%;
+    background-color: #454e59;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/*DIV CURSOS*/
+.cursos{
+    width: 49%;
+    float: left;
+    height: 45vh;
+    padding: 20px;
+    background-color: #454e59;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

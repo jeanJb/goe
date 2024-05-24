@@ -1,0 +1,132 @@
+.container {
+    max-width: 100%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #454e59;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.uno {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.container h3 {
+    margin-bottom: 1vh;
+}
+
+.container select {
+    width: 15%;
+    padding: 4px 12px;
+    font-size: 20px;
+    background: linear-gradient(150deg, #892CDC, #BC6FF1, #d69bfd);
+    border-radius: 8px;
+    display: flex;
+}
+
+.container select::after {
+    content: icon;
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #000;
+    cursor: pointer;
+    pointer-events: none;
+    transition: .25;
+}
+
+.container select option {
+    padding: 0 30px 0 10px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    background: #BC6FF1;
+    border-top: 1px black solid;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    pointer-events: none;
+    order: 2;
+    z-index: 1;
+    transition: background .5s ease-in-out;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 10px;
+}
+
+#user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#user-table tbody tr {
+    border-bottom: 2px #383838 solid;
+}
+
+#user-table th,
+#user-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+#user-table th {
+    background-color: #3f454d;
+}
+
+.buttons {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.buttons button {
+    background-color: #892CDC;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+    margin: 1% 1%;
+}
+
+.buttons button:hover {
+    background-color: #BC6FF1;
+    transition: .7s;
+}
+
+.container label {
+    display: flex;
+    cursor: pointer;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.375em;
+}
+
+.container label input {
+    position: absolute;
+    left: -9999px;
+}
+
+.container label input:checked+span {
+    background-color: #414181;
+    color: white;
+}
+
+.container label input:checked+span:before {
+    box-shadow: inset 0 0 0 0.4375em #00005c;
+}
+
+.container label span {
+    display: flex;
+    align-items: center;
+    padding: 0.375em 2em;
+    border-radius: 99em;
+    transition: 0.25s ease;
+    color: #000000;
+}
