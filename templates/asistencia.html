@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="STYLES/diseño.css">
-    <link rel="stylesheet" href="STYLES/asistencia.css">
+    <link rel="stylesheet" href="/static/STYLES/diseño.css">
+    <link rel="stylesheet" href="/static/STYLES/asistencia.css">
     <title>GOE</title>
 </head>
 <body>
     <div class="menu">
         <div class="title">
             <h1>GOE</h1>
-            <img src="IMG/GOE.jpg" alt="">
+            <img src="/static/IMG/GOE.jpg" alt="">
         </div>
 
         <ul>
-            <li><a href="home.html"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
-            <li><a href="observadores.html"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
-            <li><a href="asistencia.html"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
+            <li><a href="{{ url_for('home') }}"><img src="/static/IMG/home.svg" alt=""><p>Home</p></a></li>
+            <li><a href="{{ url_for('observadores') }}"><img src="/static/IMG/info.svg" alt=""><p>Observador</p></a></li>
+            <li><a href="{{ url_for('asistencia') }}"><img src="/static/IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
             <li><a href="login.php"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
         </ul>
 
         <div class="setting">
-            <li><a href="alert.html"><img src="IMG/message-circle.svg" alt=""><p>Notificaciones</p></a></li>
-            <li><a href="exit.php"><img src="IMG/exit.svg" alt=""><p>Configuracion</p></a></li>
-            <li><a href="perfil.html"><img src="IMG/user.svg" alt="" style="border-radius: 50%; border: 1px blueviolet solid;"><p style="font-size: 25px;">Perfil</p></a></li>
+            <li><a href="alert.html"><img src="/static/IMG/message-circle.svg" alt=""><p>Notificaciones</p></a></li>
+            <li><a href="exit.php"><img src="/static/IMG/exit.svg" alt=""><p>Configuracion</p></a></li>
+            <li><a href="{{ url_for('perfil') }}"><img src="/static/IMG/user.svg" alt="" style="border-radius: 50%; border: 1px blueviolet solid; width: 20%;"><p style="font-size: 25px;">Perfil</p></a></li>
         </div>
     </div>  
 
