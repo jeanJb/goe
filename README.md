@@ -37,5 +37,5 @@ GOE es una aplicación web que centraliza la gestión de observaciones estudiant
 1. **Clonar el repositorio:**
 Debes clonar este repositorio en tu maquina local para poder ejecutarlo:
    
-      git clone https://github.com/devexcel/GOE.git
+         git clone https://github.com/devexcel/GOE.git
    
