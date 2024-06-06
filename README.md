@@ -35,6 +35,15 @@ GOE es una aplicación web que centraliza la gestión de observaciones estudiant
 ## Instalación
 
 1. **Clonar el repositorio:**
-   ```bash
-   git clone https://github.com/devexcel/GOE.git
-   cd GOE
+Debes clonar este repositorio en tu maquina local para poder ejecutarlo:
+   
+         git clone https://github.com/devexcel/GOE.git
+
+2. **Instalar dependencias o librerias para python:**
+
+   Desbes instalar las dependencias asi como las siguientes librerias:"
+
+         pip install FLASK
+         pip install FLASK-MySQLdb
+         pip install MySQL
+   
