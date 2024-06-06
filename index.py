@@ -11,7 +11,12 @@ app.config['MYSQL_DB']='goe'
 app.config['MYSQL_CURSORCLASS']='DictCursor'
 mysql=MySQL(app)
 
+
 @app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/observadores')
 def observadores():
     return render_template('observadores.html')
 
@@ -28,9 +33,6 @@ def asistencia():
 def home():
     return render_template('home.html')
 
-@app.route('/index')
-def home():
-    return render_template('index.html')
 
 if __name__ == '__main__':
       app.secret_key="jean"
