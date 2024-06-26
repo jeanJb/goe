@@ -1,8 +1,10 @@
+
+
 /*DIV PERFIL*/
 .perfil{
     width: 100%;
-    margin: 30px auto;
-    height: 45vh;
+    margin: 10px 0 20px 0 ;
+    height: 44vh;
     padding: 20px;
     background-color: #454e59;
     border-radius: 10px;
@@ -13,6 +15,9 @@
     width: 25%;
     height: 100%;
     padding: 20px;
+    border-right: 1px black solid;
+    float: left;
+    margin-right: 20px;
 }
 
 .perfil .pp h2{
@@ -37,7 +42,7 @@
 .materia{
     width: 49%;
     float: left;
-    height: 45vh;
+    height: 44vh;
     padding: 20px;
     margin-right: 2%;
     background-color: #454e59;
@@ -49,7 +54,7 @@
 .cursos{
     width: 49%;
     float: left;
-    height: 45vh;
+    height: 44vh;
     padding: 20px;
     background-color: #454e59;
     border-radius: 10px;
