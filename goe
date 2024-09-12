@@ -1,0 +1,462 @@
+
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `goe`
+--
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+DROP PROCEDURE IF EXISTS `actualizar_contacto_acudiente`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_contacto_acudiente` (IN `p_idDetalle` INT, IN `p_telefono_acu` VARCHAR(30))   BEGIN
+    UPDATE detalle_observador
+    SET telefono_acu = p_telefono_acu
+    WHERE id_detalle = p_idDetalle;
+END$$
+
+DROP PROCEDURE IF EXISTS `insertar_curso`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_curso` (IN `p_grado` INT, IN `p_documento` INT, IN `p_salon` VARCHAR(30))   BEGIN
+    INSERT INTO curso (grado, documento, salon)
+    VALUES (p_grado, p_documento, p_salon);
+END$$
+
+DROP PROCEDURE IF EXISTS `insertar_falta`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertar_falta` (IN `p_documento` INT, IN `p_descripcion` VARCHAR(100), IN `p_compromiso` VARCHAR(55), IN `p_firma` VARCHAR(25), IN `p_seguimiento` VARCHAR(10), IN `p_falta` VARCHAR(255))   BEGIN
+    INSERT INTO observador (documento, fecha, descripcion_falta, compromiso, firma, seguimiento, falta)
+    VALUES (p_documento, NOW(), p_descripcion, p_compromiso, p_firma, p_seguimiento, p_falta);
+END$$
+
+DROP PROCEDURE IF EXISTS `registrar_asistencia`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrar_asistencia` (IN `p_documento` INT, IN `p_estado_asistencia` VARCHAR(30))   BEGIN
+    INSERT INTO asistencia (documento, estado_asis)
+    VALUES (p_documento, p_estado_asistencia);
+END$$
+
+DROP PROCEDURE IF EXISTS `registrar_detalle_asistencia`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registrar_detalle_asistencia` (IN `p_idAsistencia` INT, IN `p_idMat` INT, IN `p_fecha_asistencia` DATE, IN `p_justificacion` VARCHAR(35))   BEGIN
+    INSERT INTO detalle_asistencia (idAsistencia, idMat, Fecha_asistencia, Justificcion_inasistencia)
+    VALUES (p_idAsistencia, p_idMat, p_fecha_asistencia, p_justificacion);
+END$$
+
+--
+-- Funciones
+--
+DROP FUNCTION IF EXISTS `contar_faltas_estudiante`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `contar_faltas_estudiante` (`documento` INT) RETURNS INT  BEGIN
+    DECLARE faltas INT;
+    SELECT COUNT(*)
+    INTO faltas
+    FROM observador
+    WHERE documento = documento;
+    RETURN faltas;
+END$$
+
+DROP FUNCTION IF EXISTS `obtenerobtener_rol_usuario`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerobtener_rol_usuario` (`documento` INT) RETURNS VARCHAR(25) CHARSET utf8mb4  BEGIN
+    DECLARE rol VARCHAR(25);
+    
+    SELECT rol.nom_rol
+    INTO rol
+    FROM usuario
+    JOIN rol ON usuario.id_rol = rol.id_rol
+    WHERE usuario.documento = documento;
+    RETURN rol;
+END$$
+
+DROP FUNCTION IF EXISTS `obtener_enfermedades_estudiante`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtener_enfermedades_estudiante` (`p_documento` INT) RETURNS VARCHAR(50) CHARSET utf8mb4 DETERMINISTIC BEGIN
+    DECLARE enfermedades VARCHAR(50);
+    
+    SELECT detalle_observador.enfermedades
+    INTO enfermedades
+    FROM detalle_observador
+    JOIN observador ON detalle_observador.idObservador = observador.idobservador
+    WHERE observador.documento = p_documento;
+    RETURN enfermedades;
+END$$
+
+DROP FUNCTION IF EXISTS `obtener_nombre_completo`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `obtener_nombre_completo` (`p_documento` INT) RETURNS VARCHAR(60) CHARSET utf8mb4  BEGIN
+   DECLARE nombre_completo VARCHAR(60);
+    SELECT CONCAT(nombres, ' ', apellidos)
+    INTO nombre_completo
+    FROM usuario
+    WHERE documento = p_documento; 
+    RETURN nombre_completo;
+END$$
+
+DROP FUNCTION IF EXISTS `total_asistencias_materia`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `total_asistencias_materia` (`p_documento` INT, `p_idMat` INT) RETURNS INT DETERMINISTIC BEGIN
+    DECLARE total_asistencias INT;
+    
+    SELECT COUNT(*)
+    INTO total_asistencias
+    FROM detalle_asistencia
+    JOIN asistencia ON detalle_asistencia.idasistencia = asistencia.idasistencia
+    WHERE asistencia.documento = p_documento AND detalle_asistencia.idMat = p_idMat;
+    
+    RETURN total_asistencias;
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `asistencia`
+--
+
+DROP TABLE IF EXISTS `asistencia`;
+CREATE TABLE IF NOT EXISTS `asistencia` (
+  `idasistencia` int NOT NULL AUTO_INCREMENT COMMENT 'identificación de las asistencias de un curso',
+  `documento` int NOT NULL COMMENT 'número identificador del usuario',
+  `estado_asis` varchar(30) NOT NULL COMMENT 'estado de la asistencia del estudiante',
+  PRIMARY KEY (`idasistencia`),
+  KEY `FKAsistencia497237` (`documento`)
+) ENGINE=InnoDB  COMMENT='donde se registra la asistencia a clase del estudiante';
+
+--
+-- Volcado de datos para la tabla `asistencia`
+--
+
+INSERT INTO `asistencia` (`idasistencia`, `documento`, `estado_asis`) VALUES
+(1, 1020509681, 'Presente'),
+(2, 1020509682, 'Ausente'),
+(3, 1020509683, 'Justificado'),
+(4, 1020509684, 'Presente'),
+(5, 1020509685, 'Ausente'),
+(6, 1020509686, 'Justificado'),
+(7, 1020509687, 'Presente'),
+(8, 1020509688, 'Ausente'),
+(9, 1022222221, 'Justificado'),
+(10, 1022222222, 'Presente'),
+(11, 1022222223, 'Ausente'),
+(12, 1022222224, 'Justificado'),
+(13, 1020509687, 'Presente');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `curso`
+--
+
+DROP TABLE IF EXISTS `curso`;
+CREATE TABLE IF NOT EXISTS `curso` (
+  `grado` int NOT NULL AUTO_INCREMENT COMMENT 'nombre o número del curso al que será agregado cada estudiante',
+  `documento` int NOT NULL COMMENT 'identificación de los estudiantes asignados a los cursos',
+  `salon` varchar(30) NOT NULL COMMENT 'salón asignado a cada curso',
+  PRIMARY KEY (`grado`),
+  KEY `FKCurso544935` (`documento`)
+) ENGINE=InnoDB  COMMENT='donde se asigna a cada estudiante a un grupo';
+
+--
+-- Volcado de datos para la tabla `curso`
+--
+
+INSERT INTO `curso` (`grado`, `documento`, `salon`) VALUES
+(701, 1020509682, '201'),
+(702, 1020509686, '201'),
+(703, 1020509687, '201'),
+(801, 1020509687, '4'),
+(808, 1020509683, '101'),
+(1001, 1020509685, '202'),
+(1002, 1020509688, '202'),
+(1101, 1020509681, '101'),
+(1102, 1022222221, '101'),
+(1103, 1022222222, '101');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_asistencia`
+--
+
+DROP TABLE IF EXISTS `detalle_asistencia`;
+CREATE TABLE IF NOT EXISTS `detalle_asistencia` (
+  `Id_detalle_asis` int NOT NULL AUTO_INCREMENT COMMENT 'identificación del detalle de asistencia',
+  `Idasistencia` int NOT NULL COMMENT 'identificación de las asistencias de un curso',
+  `IdMat` int NOT NULL COMMENT 'identificación de la materia',
+  `Fecha_asistencia` date NOT NULL COMMENT 'fecha de registro del detalle de la asistencia',
+  `Justificcion_inasistencia` varchar(35) NOT NULL COMMENT 'justificación de la inasistencia del estudiante',
+  PRIMARY KEY (`Id_detalle_asis`),
+  KEY `FKDetalle_as570130` (`Idasistencia`),
+  KEY `FKDetalle_as701223` (`IdMat`)
+) ENGINE=InnoDB COMMENT='donde se registran los detalles de la asistencia del estudiante';
+
+--
+-- Volcado de datos para la tabla `detalle_asistencia`
+--
+
+INSERT INTO `detalle_asistencia` (`Id_detalle_asis`, `Idasistencia`, `IdMat`, `Fecha_asistencia`, `Justificcion_inasistencia`) VALUES
+(1, 1, 1, '2024-07-01', 'N/A'),
+(2, 2, 2, '2024-07-02', 'N/A'),
+(3, 3, 3, '2024-07-03', 'N/A'),
+(4, 4, 4, '2024-07-04', 'N/A'),
+(5, 5, 5, '2024-07-05', 'N/A'),
+(6, 6, 6, '2024-07-06', 'N/A'),
+(7, 7, 7, '2024-07-07', 'N/A'),
+(8, 8, 8, '2024-07-08', 'N/A'),
+(9, 9, 9, '2024-07-09', 'N/A'),
+(10, 10, 10, '2024-07-10', 'N/A');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_observador`
+--
+
+DROP TABLE IF EXISTS `detalle_observador`;
+CREATE TABLE IF NOT EXISTS `detalle_observador` (
+  `id_detalle` int NOT NULL AUTO_INCREMENT COMMENT 'la identificación asignada al detalle del observador',
+  `IdObservador` int NOT NULL COMMENT 'Código asignado a cada observador',
+  `rh_estudiante` varchar(10) NOT NULL COMMENT 'se registra el tipo de RH o sangre de un estudiante',
+  `eps` varchar(30) NOT NULL COMMENT 'se registra la EPS del estudiante',
+  `fecha_naci` date NOT NULL COMMENT 'se registra la fecha de nacimiento del estudiante',
+  `enfermedades` varchar(50) DEFAULT NULL COMMENT 'se registra si el estudiante tiene alguna enfermedad o no tiene ninguna',
+  `nom_acu` varchar(30) NOT NULL COMMENT 'se registra el nombre del acudiente del estudiante',
+  `telefono_acu` varchar(30) NOT NULL COMMENT 'se registra el teléfono del acudiente del estudiante',
+  `doc_acu` varchar(20) NOT NULL COMMENT 'se registra el número de documento del acudiente',
+  PRIMARY KEY (`id_detalle`),
+  KEY `FKdetalleObs325802` (`IdObservador`)
+) ENGINE=InnoDB  COMMENT='donde se registran los detalles específicos del estudiante';
+
+--
+-- Volcado de datos para la tabla `detalle_observador`
+--
+
+INSERT INTO `detalle_observador` (`id_detalle`, `IdObservador`, `rh_estudiante`, `eps`, `fecha_naci`, `enfermedades`, `nom_acu`, `telefono_acu`, `doc_acu`) VALUES
+(6, 1, 'O+', 'SALUD TOTAL', '2008-02-02', 'N/A', 'JOHN GOMES', '1023460998', '3103933431'),
+(7, 2, 'AB+', 'COLSUBSIDIO', '2008-05-03', 'N/A', 'ERICK TORREZ', '1123460998', '3125433598'),
+(8, 3, 'A+', 'SANITAS', '2008-12-04', 'N/A', 'JHONATAN LOPEZ', '1023460998', '3508856383'),
+(9, 4, 'A-', 'COMPENSAR', '2008-01-05', 'N/A', 'MONICA MARTÍNEZ', '1023460998', '3156783321'),
+(10, 5, 'O-', 'SALUD TOTAL', '2008-10-06', 'N/A', 'CATALINA VARGAS', '1023460998', '3402133244');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `horario`
+--
+
+DROP TABLE IF EXISTS `horario`;
+CREATE TABLE IF NOT EXISTS `horario` (
+  `Idhorario` int NOT NULL AUTO_INCREMENT COMMENT 'identificación del horario de un curso',
+  `IdMat` int NOT NULL COMMENT 'identificación de la materia',
+  `grado` int NOT NULL COMMENT 'número del grado',
+  `Fecha_inicio` datetime NOT NULL COMMENT 'fecha de inicio del horario del curso',
+  `Fecha_fin` datetime NOT NULL COMMENT 'fecha de fin del horario de un curso',
+  PRIMARY KEY (`Idhorario`),
+  KEY `FKHorario205184` (`IdMat`),
+  KEY `FKHorario52500` (`grado`)
+) ENGINE=InnoDB  COMMENT='donde se lleva un control de las clases que toma un curso durante el día';
+
+--
+-- Volcado de datos para la tabla `horario`
+--
+
+INSERT INTO `horario` (`Idhorario`, `IdMat`, `grado`, `Fecha_inicio`, `Fecha_fin`) VALUES
+(1, 1, 1101, '2024-04-05 09:00:00', '2024-04-05 09:00:00'),
+(2, 2, 808, '2024-04-05 09:00:00', '2024-04-05 09:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `materia`
+--
+
+DROP TABLE IF EXISTS `materia`;
+CREATE TABLE IF NOT EXISTS `materia` (
+  `idmat` int NOT NULL AUTO_INCREMENT COMMENT 'identificación de la materia',
+  `nomb_mat` varchar(35) NOT NULL COMMENT 'nombre de la materia registrada para el curso',
+  PRIMARY KEY (`idmat`)
+) ENGINE=InnoDB COMMENT='donde se registran las clases que los estudiantes toman';
+
+--
+-- Volcado de datos para la tabla `materia`
+--
+
+INSERT INTO `materia` (`idmat`, `nomb_mat`) VALUES
+(1, 'CASTELLANO'),
+(2, 'INFORMATICA'),
+(3, 'INGLES'),
+(4, 'RELIGION'),
+(5, 'MATEMATICAS'),
+(6, 'FISICA'),
+(7, 'EDU.FISICA'),
+(8, 'FILOSOFIA'),
+(9, 'SOCIALES'),
+(10, 'QUIMICA');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `observador`
+--
+
+DROP TABLE IF EXISTS `observador`;
+CREATE TABLE IF NOT EXISTS `observador` (
+  `idobservador` int NOT NULL AUTO_INCREMENT COMMENT 'Código asignado a cada observador',
+  `documento` int NOT NULL COMMENT 'conexión de datos del usuario',
+  `fecha` date NOT NULL COMMENT 'fecha en la que se registra la observación',
+  `descripcion_falta` varchar(100) NOT NULL COMMENT 'es el compromiso que se hace a cada estudiante cada vez que se le hace una observación',
+  `compromiso` varchar(55) NOT NULL COMMENT 'firma del estudiante aprobando la observación',
+  `firma` varchar(25)  COMMENT 'es el seguimiento o control que se le hace a cada instructor dependiendo si tiene mal comportamiento y muchos llamados de atención',
+  `seguimiento` varchar(10) NOT NULL COMMENT 'es el seguimiento o control que se le hace a cada instructor dependiendo si tiene mal comportamiento y muchos llamados de atencion',
+  `falta` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`idobservador`),
+  KEY `FKObservador378615` (`documento`)
+) ENGINE=InnoDB  COMMENT='donde se realiza un seguimiento al estudiante';
+
+--
+-- Volcado de datos para la tabla `observador`
+--
+
+INSERT INTO `observador` (`idobservador`, `documento`, `fecha`, `descripcion_falta`, `compromiso`, `firma`, `seguimiento`, `falta`) VALUES
+(1, 1020509681, '2044-06-02', 'NO TRAJO EL UNIFORME', 'NA', 'NA', 'JUAN', 'LEVE'),
+(2, 1020509682, '2024-01-05', 'NO TRAJO LA TAREA', 'NA', 'NA', 'PEDRO', 'MEDIA'),
+(3, 1020509683, '2024-09-06', 'LLEGO TARDE A CLASE', 'NA', 'NA', 'SARA', 'MEDIA'),
+(4, 1020509684, '2024-09-06', 'LLEGO TARDE A CLASE', 'NA', 'NA', 'KAOMI', 'MEDIA'),
+(5, 1020509685, '2024-09-06', 'LLEGO TARDE A CLASE', 'NA', 'NA', 'SANDRA', 'GRAVE'),
+(40, 1020509687, '2024-09-10', 'se porto mal', 'no lo vuelve hacer', '', 'se le hara', 'grave');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol`
+--
+
+DROP TABLE IF EXISTS `rol`;
+CREATE TABLE IF NOT EXISTS `rol` (
+  `id_rol` int NOT NULL AUTO_INCREMENT COMMENT 'identificador de cada Rol',
+  `nom_rol` varchar(25) NOT NULL COMMENT 'nombre asignado a cada rol',
+  PRIMARY KEY (`id_rol`)
+) ENGINE=InnoDB COMMENT='donde se asigna el rol que tomará el actor para interactuar con el sistema';
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`id_rol`, `nom_rol`) VALUES
+(101, 'ESTUDIANTE'),
+(102, 'DOCENTE'),
+(103, 'ACUDIENTE'),
+(104, 'ADMINISTRADOR');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `documento` int NOT NULL COMMENT 'número identificador del usuario',
+  `id_rol` int NOT NULL COMMENT 'rol asignado a cada usuario',
+  `email` varchar(25) NOT NULL COMMENT 'correo registrado por cada usuario',
+  `clave` varchar(30) NOT NULL COMMENT 'clave registrada por el usuario',
+  `tipo_doc` varchar(10) NOT NULL COMMENT 'tipo de documento del usuario',
+  `nombres` varchar(30) NOT NULL COMMENT 'primer nombre del usuario',
+  `apellidos` varchar(30) DEFAULT NULL COMMENT 'segundo apellido del usuario',
+  `telefono` varchar(30) NOT NULL COMMENT 'teléfono del usuario',
+  `direccion` varchar(30) NOT NULL COMMENT 'dirección del usuario',
+  `foto` varchar(255) DEFAULT NULL COMMENT 'foto del usuario',
+  PRIMARY KEY (`documento`),
+  KEY `FKusuario738911` (`id_rol`)
+) ENGINE=InnoDB  COMMENT='donde se registran los datos del usuario que ingresa al sistema';
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`documento`, `id_rol`, `email`, `clave`, `tipo_doc`, `nombres`, `apellidos`, `telefono`, `direccion`, `foto`) VALUES
+(1020509681, 101, 'pedro.torrez@example.com', 'password123', 'T.I', 'Pedro', 'Torrez', '3325678998', 'CR 56 DIG 6', NULL),
+(1020509682, 101, 'luis.martinez@example.com', 'password123', 'T.I', 'Luis', 'Martínez', '3112345678', 'CLL 3 #10', NULL),
+(1020509683, 101, 'claudia.rodriguez@example', 'password123', 'T.I', 'Claudia', 'Rodríguez', '3147654321', 'AV 7 #40', NULL),
+(1020509684, 101, 'maria.mendoza@example.com', 'password123', 'T.I', 'María', 'Mendoza', '3123451234', 'AV 9 #55', NULL),
+(1020509685, 102, 'vanessa.ramirez@example.c', 'password123', 'C.C', 'Vanessa', 'Ramírez', '3109876543', 'CR 8 #70', NULL),
+(1020509686, 102, 'daniela.suarez@example.co', 'password123', 'C.C', 'Daniela', 'Suárez', '3208901234', 'CLL 12 #120', NULL),
+(1020509687, 101, 'alejandro.diaz@example.co', 'password123', 'T.I', 'Alejandro', 'Díaz', '3207654321', 'CLL 25 #160', NULL),
+(1020509688, 101, 'natalia.gomez@example.com', 'password123', 'T.I', 'Natalia', 'Gómez', '3209876543', 'CLL 30 #200', NULL),
+(1022222221, 101, 'laura.garcia@example.com', 'password123', 'T.I', 'Laura', 'García', '3106543210', 'CR 22 #12', NULL),
+(1022222222, 104, 'hugo.martinez@example.com', 'password123', 'C.C', 'Hugo', 'Martínez', '3103933431', 'CLL 11 #7 CENTRO', NULL),
+(1022222223, 102, 'javier.cruz@example.com', 'password123', 'C.C', 'Javier', 'Cruz', '3134567890', 'CLL 5 #20', NULL),
+(1022222224, 102, 'natalia.perez@example.com', 'password123', 'C.C', 'Natalia', 'Pérez', '3198765432', 'KR 5 #50', NULL),
+(1022222225, 103, 'julian.hurtado@example.co', 'password123', 'C.C', 'Julián', 'Hurtado', '3195432109', 'AV 12 #90', NULL),
+(1022222226, 103, 'ricardo.sanchez@example.c', 'password123', 'C.C', 'Ricardo', 'Sánchez', '3203456789', 'CLL 22 #140', NULL),
+(1022222227, 101, 'andrea.patino@example.com', 'password123', 'T.I', 'Andrea', 'Patiño', '3208765432', 'CLL 28 #180', NULL),
+(1023460992, 103, 'sebastian.gomez@example.c', 'password123', 'C.C', 'Sebastián', 'Gómez', '3109876543', 'CR 50 #190', NULL),
+(1023460993, 101, 'catherine.moreno@example.', 'password123', 'T.I', 'Catherine', 'Moreno', '3106543210', 'CR 40 #150', NULL);
+
+--
+-- Disparadores `usuario`
+--
+DROP TRIGGER IF EXISTS `trg_actualizar_rol_documento`;
+DELIMITER $$
+CREATE TRIGGER `trg_actualizar_rol_documento` AFTER UPDATE ON `usuario` FOR EACH ROW BEGIN
+    IF OLD.documento <> NEW.documento THEN
+        UPDATE goe_rol
+        SET nom_rol = 'Estudiante'
+        WHERE id_rol = NEW.id_rol;
+    END IF;
+END
+$$
+DELIMITER ;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `asistencia`
+--
+ALTER TABLE `asistencia`
+  ADD CONSTRAINT `FKAsistencia497237` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`);
+
+--
+-- Filtros para la tabla `curso`
+--
+ALTER TABLE `curso`
+  ADD CONSTRAINT `FKCurso544935` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`);
+
+--
+-- Filtros para la tabla `detalle_asistencia`
+--
+ALTER TABLE `detalle_asistencia`
+  ADD CONSTRAINT `FKDetalle_as570130` FOREIGN KEY (`Idasistencia`) REFERENCES `asistencia` (`idasistencia`),
+  ADD CONSTRAINT `FKDetalle_as701223` FOREIGN KEY (`IdMat`) REFERENCES `materia` (`idmat`);
+
+--
+-- Filtros para la tabla `detalle_observador`
+--
+ALTER TABLE `detalle_observador`
+  ADD CONSTRAINT `FKdetalleObs325802` FOREIGN KEY (`IdObservador`) REFERENCES `observador` (`idobservador`);
+
+--
+-- Filtros para la tabla `horario`
+--
+ALTER TABLE `horario`
+  ADD CONSTRAINT `FKHorario205184` FOREIGN KEY (`IdMat`) REFERENCES `materia` (`idmat`),
+  ADD CONSTRAINT `FKHorario52500` FOREIGN KEY (`grado`) REFERENCES `curso` (`grado`);
+
+--
+-- Filtros para la tabla `observador`
+--
+ALTER TABLE `observador`
+  ADD CONSTRAINT `FKObservador378615` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `FKusuario738911` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
+COMMIT;
