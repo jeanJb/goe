@@ -1,0 +1,49 @@
+.students{
+    width: 30%;
+    height: 87vh;
+    border-radius: 0 10px 10px 0;
+    border-right: 6px dotted #ececec;
+}
+
+.datos{
+    max-width: 100%;
+    margin: 40px auto;
+    height: 30vh;
+}
+
+.uno {
+    margin: 2% 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.datos h3 {
+    margin-bottom: 1vh;
+}
+
+.datos h3{
+    font-size: 18px;
+    margin-left: 6%;
+    display: flex;
+    flex-direction: row;
+}
+
+.datos h3 p{
+    font-size: 15px;
+    margin-left: 1%;
+    display: flex;
+    flex-direction: row;
+}
+
+.c{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.datos1{
+    max-width: 100%;
+    margin: 30px auto;
+    height: 48vh;
+}

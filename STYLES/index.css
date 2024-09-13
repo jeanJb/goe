@@ -1,0 +1,102 @@
+*{
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+body{
+    background-color: #222831;
+}
+
+nav{
+    width: 30%;
+    height: 100vh;
+    /*background: linear-gradient(#222831 40%, #BC6FF1);*/
+    background-image: url(../IMG/index.svg);
+    background-size: cover;
+    border-right: 2px solid black;
+    float: left;
+}
+
+.img{
+    float: left;
+    width: 70%;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: #2b183f;
+    /*background: linear-gradient(142deg, #222831 0%, #8a2cdc 35%, #BC6FF1 100%);*/
+    background-image: url(../IMG/portada.jpg);
+}
+
+form{
+    margin: 22% auto;
+    width: 90%;
+    height: 65vh;
+    border-radius: 18px;
+    padding: 10% 10%;
+    /*background-color: #460382a0;
+    box-shadow: 1px 2px 20px rgb(158, 158, 158);*/
+}
+}
+
+form{
+    margin: 22% auto;
+    width: 90%;
+    height: 65vh;
+    border-radius: 18px;
+    padding: 10% 10%;
+    /*background-color: #460382a0;
+    box-shadow: 1px 2px 20px rgb(158, 158, 158);*/
+}
+
+form .log{
+    text-align: center;
+}
+
+form .log img{
+    width: 35%;
+}
+
+form .log h3{
+    text-align: left;
+    padding: 0 32%;
+}
+
+input[type="email"], input[type="password"]{
+    width: 54%;
+    height: 2.8vh;
+    border-radius: 10px;
+    border:  1px solid white;
+    background-color: #222831;
+    backdrop-filter: blur(200px);
+}
+
+input[type="email"], input[type="password"]:placeholder-shown{
+    background-color: #222831;
+}
+
+.button{
+    width: auto;
+    padding: 8px 20px;
+    border-radius: 10px;
+    background-color: #892CDC;
+    margin: 1% 1%;
+}
+
+.button:hover{
+    background-color: #BC6FF1;
+    transition: .7s;
+}
+
+.ribbon {
+    width: 40%;
+    height: 100vh;
+    clip-path: polygon(0 0, 86% 0, 50% 100%, 0% 100%);
+    background: rgb(44,0,71);
+    background: linear-gradient(133deg, rgba(44,0,71,1) 10%, rgba(137,44,220,0.8239670868347339) 70%, rgba(188,111,241,0.5270483193277311) 100%);
+}

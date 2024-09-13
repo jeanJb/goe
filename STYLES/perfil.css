@@ -1,0 +1,50 @@
+
+
+/*DIV PERFIL*/
+.perfil{
+    width: 100%;
+    margin: 10px 0 20px 0 ;
+    height: 40vh;
+}
+
+.perfil .pp{
+    width: 25%;
+    height: 100%;
+    padding: 20px;
+    border-right: 1px black solid;
+    float: left;
+    margin-right: 20px;
+}
+
+.perfil .pp h2{
+    margin: 10px 0;
+}
+
+.perfil .pp .img{
+    width: 100%;
+    height: 50%;
+    border-bottom: black 1px solid;
+    padding: 10px;
+}
+
+.perfil .pp .img img{
+    width: 60%;
+    height: 100%;
+    border-radius: 80%;
+    margin: 0 20%;
+}
+
+/*DIV MATERIA*/
+.materia{
+    width: 49%;
+    float: left;
+    height: 44vh;
+    margin-right: 2%;
+}
+
+/*DIV CURSOS*/
+.cursos{
+    width: 49%;
+    float: left;
+    height: 44vh;
+}
