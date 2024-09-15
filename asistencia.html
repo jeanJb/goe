@@ -18,7 +18,7 @@
             <li><a href="home.html"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
             <li><a href="observadores.html"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
             <li><a href="asistencia.html"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
-            <li><a href="login.html"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
+            <li><a href="intro.html"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
 
         </ul>
     </div> 
@@ -131,7 +131,7 @@
                         <td>Ciencias</td>
                         <td>Nelson</td>
                         <td>2020-02-31 21:01:00</td>
-                        <td><a href="#openModal" class="button" id="open">Abrir</a></td>
+                        <td><a href="#openModal" class="button" >Abrir</a></td>
                     </tr>
                     <!-- Add more rows here as needed -->
                 </tbody>
@@ -151,9 +151,39 @@
 <div id="openModal" class="modal_asis">
     <div class="colordiv">
         <a href="#close" id="close" class="close">X</a>
-        <h2>Mi modal</h2>
-        <p>Este es un ejemplo de modal, creado gracias al poder de CSS3.</p>
-        <p>Puedes hacer un montón de cosas aquí, como alertas o incluso crear un formulario de registro aquí mismo.</p>
+        <h2 style="text-align: center;">Listado de Asistencia</h2>
+        <h3>Curso: </h3>
+        <h3>Materia: </h3>
+        <h3>Fecha: </h3>
+        <br>
+        <form action="">
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Apellidos</th>
+                        <th>Nombres</th>
+                        <th>Asistencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>444</td>
+                        <td>Bolaños Bedoya</td>
+                        <td>Jaime Jean Pierre</td>
+                        <td style="display: flex; flex-direction: row; justify-content: first baseline;">
+                            <select name="" id="" style="width: auto;" class="select">
+                                <option value="">Asistio</option>
+                                <option value="">Retardo</option>
+                                <option value="">Falla</option>
+                                <option value="">Excusa</option>
+                            </select>
+                        </td>
+                    </tr>
+            </table>
+            <br>
+            <button class="button" type="submit">ACTUALIZAR</button>
+        </form>
     </div>
 </div>
 

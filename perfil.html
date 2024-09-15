@@ -18,7 +18,7 @@
             <li><a href="home.html"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
             <li><a href="observadores.html"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
             <li><a href="asistencia.html"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
-            <li><a href="login.html"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
+            <li><a href="intro.html"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
 
         </ul>
     </div> 
@@ -43,17 +43,51 @@
                 <center><h2>NOMBRES APELLIDOS</h2></center>
                 <center><h3 style="margin-bottom: 8px;">Cargo</h3></center>
                 <center><h3>CURSO:  N/A</h3></center>
+                <br>
+                <a href="#openModal" class="button">ACTUALIZAR PERFIL</a>
             </div>
             <!--h6>Nombre:</!--h6>
             <h3>Jean Paul Martinez</h3>
             <br-->
             <div style="width: 35%; float: left;">
-                <h6>Email:</h6>
-                <h3>nomameil@ctjfr.edu.co</h3>
+                <h1>Datos Adicionales</h1>
                 <br>
-                <h6>Telefono:</h6>
-                <h3>3002221425</h3>
+                <h3>Email:</h3>
+                <h4>nomameil@ctjfr.edu.co</h4>
+                <br>
+                <h3>Telefono:</h3>
+                <h4>3002221425</h4>
+                <br>
+                <h3>Direccion:</h3>
+                <h4>Calle 6</h4>
             </div>
+
+            <!-- Datos tabla detalle observador -->
+            <!-- Solo para estudiantes -->
+            <!-- <div style="width: 35%; float: left;">
+                <br>
+                <h3>EPS:</h3>
+                <h4>compensar</h4>
+                <br>
+                <h3>Fecha de Nacimiento:</h3>
+                <h4>3002221425</h4>
+                <br>
+                <h3>Enfermedades:</h3>
+                <h4>N/A</h4>
+                <br>
+                <h3>Nombre Acudiente:</h3>
+                <h4>N/A</h4>
+                <br>
+                <h3>Telefono Acudiente</h3>
+                <h4></h4>
+                <br>
+                <h3>Documento Acudiente:</h3>
+                <h4></h4>
+                <br>
+                <a href="#openModal" class="button">ACTUALIZAR</a>
+            </div> -->
+
+            
             <!--div style="float: right; width: 35%;">
                 <center><h2>Horarios de Atención a Padres</h2></center>
                 <br>
@@ -74,5 +108,46 @@
     </div>
 </body>
 </html>
+
+<!-- Modal para actualizar perfil -->
+
+<div id="openModal" class="modal_asis">
+    <div class="colordiv">
+        <a href="#close" id="close" class="close">X</a>
+        <h2 style="text-align: center;">Listado de Asistencia</h2>
+        <h3>Curso: </h3>
+        <h3>Materia: </h3>
+        <h3>Fecha: </h3>
+        <br>
+        <form action="">
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Apellidos</th>
+                        <th>Nombres</th>
+                        <th>Asistencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>444</td>
+                        <td>Bolaños Bedoya</td>
+                        <td>Jaime Jean Pierre</td>
+                        <td style="display: flex; flex-direction: row; justify-content: first baseline;">
+                            <select name="" id="" style="width: auto;" class="select">
+                                <option value="">Asistio</option>
+                                <option value="">Retardo</option>
+                                <option value="">Falla</option>
+                                <option value="">Excusa</option>
+                            </select>
+                        </td>
+                    </tr>
+            </table>
+            <br>
+            <button class="button" type="submit">ACTUALIZAR</button>
+        </form>
+    </div>
+</div>
 
 <!--https://layers.to/layers/clv0q7xjj005dky0hzjj7rhtb-->
