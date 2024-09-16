@@ -1,0 +1,81 @@
+<?php
+class UsuarioDto{
+    private $documento = 0;
+    private $id_rol = "";
+    private $email = "";
+    private $clave = "";
+    private $tipo_doc = "";
+    private $nombres = "";
+    private $apellidos = "";
+    private $telefono = "";
+    private $direccion = "";
+    private $foto = "";
+
+// GET
+function getdocumento(){
+    return $this->documento;
+}
+function getid_rol(){
+    return $this->id_rol;
+}
+function getemail(){
+    return $this->email;
+}
+function getClave(){
+    return $this->clave;
+}
+function gettipo_doc(){
+    return $this->tipo_doc;
+}
+function getNombres(){
+    return $this->nombre;
+}
+function getApellidos(){
+    return $this->apellidos;
+}
+function gettelefono(){
+    return $this->telefono;
+}
+function getdireccion(){
+    return $this->direccion;
+}
+
+function getfoto(){
+    return $this->foto;
+}
+
+
+//set
+function setdocumento($documento){
+    $this->documento=$documento;
+}
+function setid_rol($id_rol){
+     $this->id_rol=$id_rol;
+}
+function setemail($email){
+     $this->email=$email;
+}
+function setClave($clave){
+    $this->clave=$clave;
+}
+function settipo_doc($tipo_doc){
+     $this->tipo_doc=$tipo_doc;
+}
+function setNombres($nombres){
+    $this->nombres=$nombres;
+}
+function setApellidos($apellidos){
+     $this->apellidos=$apellidos;
+}
+function settelefono($telefono){
+     $this->telefono=$telefono;
+}
+function setdireccion($direccion){
+    $this->direccion=$direccion;
+}
+
+function setfoto($foto){
+     $this->foto=$foto;
+}
+
+}
