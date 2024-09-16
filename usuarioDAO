@@ -1,0 +1,121 @@
+<?php
+
+class UsuarioDao{
+
+    public function registrarUsuario(UsuarioDto $usuarioDto){
+    $cnn = Conexion::getConexion();
+    $mensaje = "";
+
+    try {
+        $query = $cnn->prepare("INSERT INTO usuario values(?,?,?,?,?)");
+        $query->bindParam(1, $usuarioDto->getdocumento());
+        $query->bindParam(2, $usuarioDto->getid_rol());
+        $query->bindParam(3, $usuarioDto->getemail());
+        $query->bindParam(4, $usuarioDto->getClave());
+        $query->bindParam(5, $usuarioDto->gettipo_doc());
+        $query->bindParam(6, $usuarioDto->getnombres());
+        $query->bindParam(7, $usuarioDto->getapellidos());
+        $query->bindParam(8, $usuarioDto->getrelefono());
+        $query->bindParam(9, $usuarioDto->getdireccion());
+        $query->bindParam(10, $usuarioDto->getfoto());
+        $query->execute();
+        $mensaje= "Registro exitoso";
+    } catch (Exception  $ex) {
+        $mensaje= $ex->getMessage();
+    }
+    $cnn= null;
+    return $mensaje;
+    }
+
+    public function insertar($usuario) {
+        $sql = "INSERT INTO usuario (documento, id_rol, email, clave, tipo_doc, nombres, apellidos, telefono, direccion, foto)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conexion->prepare($sql);
+        return $stmt->execute([
+            $usuario->getDocumento(),
+            $usuario->getIdRol(),
+            $usuario->getEmail(),
+            $usuario->getClave(),
+            $usuario->getTipoDoc(),
+            $usuario->getNombres(),
+            $usuario->getApellidos(),
+            $usuario->getTelefono(),
+            $usuario->getDireccion(),
+            $usuario->getFoto()
+        ]);
+    }
+
+    
+//modificar usuario
+public function modificarUsuario(UsuarioDto $usuarioDto){
+    $cnn = Conexion::getConexion();
+    $mensaje = "";
+    try {
+        $query = $cnn->prepare("UPDATE usuario SET  id_rol=?, email=?, clave=?, tipo_doc=?, nombres=?, apellidos=?, telefono=?, direccion=?, foto=? WHERE documento=?");
+        $query->bindParam(1, $usuarioDto->getdocumento());
+        $query->bindParam(2, $usuarioDto->getid_rol());
+        $query->bindParam(3, $usuarioDto->getemail());
+        $query->bindParam(4, $usuarioDto->getClave());
+        $query->bindParam(5, $usuarioDto->gettipo_doc());
+        $query->bindParam(6, $usuarioDto->getnombres());
+        $query->bindParam(7, $usuarioDto->getapellidos());
+        $query->bindParam(8, $usuarioDto->getrelefono());
+        $query->bindParam(9, $usuarioDto->getdireccion());
+        $query->bindParam(10, $usuarioDto->getfoto());
+        $query->execute();
+        $mensaje= "Registro actualizado";
+    } catch (Exception  $ex) {
+        $mensaje= $ex->getMessage();
+    }
+    $cnn= null;
+    return $mensaje;
+    }
+    // obtener usuario
+public function obtenerUsuario($idUsuario){
+    $cnn = Conexion::getConexion();
+    $mensaje = "";
+try {
+    $query = $cnn->prepare('SELECT * FROM usuario WHERE documento=?');
+    $query->bindParam(1, $documento);
+    $query->execute();
+    return $query->fetch();
+
+} catch (Exception  $ex) {
+    $mensaje= $ex->getMessage();
+}
+$cnn= null;
+return $mensaje;
+}
+
+//eliminar Usuario
+public function eliminarUsuario($documento){
+    $cnn = Conexion::getConexion();
+    $mensaje = "";
+    try {
+        $query = $cnn->prepare('DELETE FROM usuario WHERE documento= ?');
+        $query->bindParam(1, $documento);
+        $query->execute();
+        $mensaje= "Registro eliminado";
+    } catch (Exception  $ex) {
+        $mensaje= $ex->getMessage();
+    }
+    return $mensaje;
+}
+
+    //Listar
+
+    public function listarTodos(){
+        $cnn = Conexion::getConexion();
+
+        try {
+            $listarUsuario = 'SELECT * from usuario';
+            $query = $cnn->prepare($listarUsuario);
+            $query->execute();
+            return $query->fetchAll();
+        } catch (Exception  $ex) {
+            echo 'Error'. $ex->getMessage();
+        }
+    }
+}
+
+?>
