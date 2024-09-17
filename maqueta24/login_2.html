@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="diseño.css">
+    <link rel="stylesheet" href="home.css">
+    
+</head>
+
+<body>
+    <!-- Menú en el lado izquierdo -->
+    <div class="menu colordis">
+        <div class="title">
+            <h1>GOE</h1>
+            <img src="IMG/GOE.jpg" alt="Logo GOE">
+        </div>
+        <ul>
+            <li><a href="home.html"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
+            <li><a href="observadores.html"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
+            <li><a href="asistencia.html"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
+            <li><a href="login.html"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
+        </ul>
+    </div>
+
+    <!-- Formulario de Login -->
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" placeholder="Ingrese su usuario" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+            </div>
+            <button type="submit">Ingresar</button>
+            <p id="error-message" class="error-message"></p>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
