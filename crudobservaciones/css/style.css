@@ -1,0 +1,28 @@
+.swal-title{
+    color:#066b74;
+    font-size: 30px;
+    }
+
+    .swal-popup{
+        border-radius: 15px;
+        border: 2px solid #b8c2d2;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    }
+
+    /* .consu{
+        display:grid;
+        place-content: center;
+    } */
+
+    .table-container{
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td{
+        vertical-align: middle;
+        text-align: center;
+    }
