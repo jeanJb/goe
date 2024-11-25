@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="STYLES/diseño.css">
-    <link rel="stylesheet" href="STYLES/">
+    <link rel="stylesheet" href="STYLES/intro.css">
     <title>GOE
     </title>
 </head>
 <body>
-    <div class="menu colordis">
+<div class="menu colordis">
         <div class="title">
             <h1>GOE</h1>
             <img src="IMG/GOE.jpg" alt="">
         </div>
 
         <ul>
-            <li><a href="home.html"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
-            <li><a href="observadores.html"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
-            <li><a href="asistencia.html"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
-            <li><a href="intro.html"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
+            <li><a href="home.php"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
+            <li><a href="observadores.php"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
+            <li><a href="asistencia.php"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
+            <li><a href="intro.php"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
 
         </ul>
     </div> 
@@ -29,13 +29,72 @@
     <nav class="nav colordis">
         <ul>
             <li><a href="alert.html"><img src="IMG/message-circle.svg" alt=""><!-- <p>Notificaciones</p> --></a></li>
-            <li><a href="perfil.html"><img src="IMG/user.svg" alt="" style="border-radius: 50%; border: 1px #50c6e3 solid;"><!-- <p>Perfil</p> --></a></li>
+            <li><a href="perfil.php"><img src="IMG/user.svg" alt="" style="border-radius: 50%; border: 1px #50c6e3 solid;"><!-- <p>Perfil</p> --></a></li>
             <li><a href="exit.php"><img src="IMG/exit.svg" alt=""><!-- <p>Cerrar Sesion</p> --></a></li>
         </ul>
     </nav>  
 
     <!--Contenido de la pagina-->
-    <div class="contenido">
+    <div class="contenido" style="display: grid;place-items: center;">
+        <form action="controladores/controlador.usuarios.php" method="POST"  class="form colordiv">
+            <p class="titles">Registrar Usuarios </p>
+            <p class="message">Seleccione adecuadamente el rol del usuario. </p>
+                <div class="flex">
+                <label>
+                    <input class="input" name="pn" type="text" placeholder="" required="">
+                    <span>Primer Nombre</span>
+                </label>
+        
+                <label>
+                    <input class="input" name="sn" type="text" placeholder="" required="">
+                    <span>Segundo Nombre</span>
+                </label>
+            </div>  
+
+            
+                <div class="flex">
+                <label>
+                    <input class="input" name="pa" type="text" placeholder="" required="">
+                    <span>Primer Apellido</span>
+                </label>
+        
+                <label>
+                    <input class="input" name="sa" type="text" placeholder="" required="">
+                    <span>Segundo Apellido</span>
+                </label>
+            </div>  
+                    
+            <label>
+                <input class="input" name="email" type="email" placeholder="" required="">
+                <span>Email</span>
+            </label> 
+                
+            <label>
+                <input class="input" name="clave" type="password" placeholder="" required="">
+                <span>Contraseña</span>
+            </label>
+            <label>
+                <input class="input" name="direccion" type="text" placeholder="" required="">
+                <span>Direccion</span>
+            </label>
+            <label>
+                <input class="input" name="doc" type="text" placeholder="" required="">
+                <span>Documento</span>
+            </label>
+            <label>
+                <input class="input" name="tel" type="number" placeholder="" required="">
+                <span>Telefono</span>
+            </label>
+            <label>
+                <h3>Rol</h3>
+                <select name="tipd" id="" class="select" style="width: auto;">
+                    <option value="">T.I</option>
+                    <option value="">C.C</option>
+                    <option value="">C.E</option>
+                </select>
+            </label>
+            <button class="submit">Registrar</button>
+        </form>
     </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(isset($_SESSION['nombre'])){
-    header('Location: home.html');
+    header('Location: index.php');
     exit();  
     }
 
@@ -11,17 +11,17 @@ if(isset($_SESSION['nombre'])){
 
 require 'Utilidades/conexion.php';
 $cnn= Conexion::getConexion();
-$usu= $_POST['txtUsu'];
-$contra= $_POST['txtPass'];
-$sentencia= $cnn->prepare("SELECT * FROM t_usuario WHERE nombres =? and password_usu =?;");
-$sentencia->execute([$usu, $contra]);
+$email= $_POST['txtemail'];
+$clave= $_POST['txtpass'];
+$sentencia= $cnn->prepare("SELECT * FROM usuario WHERE email =? and clave =?;");
+$sentencia->execute([$email, $clave]);
 $valor= $sentencia->fetch(PDO::FETCH_OBJ);
 
 if($valor ===FALSE){
-    header('Location:login.php?error=1');
+    header('Location:go.php?error=1');
 }else if($sentencia->rowcount()==1){
-    $_SESSION['nombre'] =$valor->nombres;
-    header('Location:home.html');
+    $_SESSION['email'] =$valor->email;
+    header('Location:home.php');
     exit();
 }
 

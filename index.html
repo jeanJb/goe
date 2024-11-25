@@ -1,38 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="STYLES/index.css">
-    <title>Document</title>
+    <title>INDEX</title>
+    <link rel="stylesheet" href="STYLES/diseño.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="STYLES/blog.css">
 </head>
+
 <body>
-    <nav>
-        <form action="">
-            <div class="log">
-                <img src="IMG//user.svg" alt="">
-                <h1>INICIAR SESION</h1>
-                <br>
-                <h3>Correo</h3>
-                <input type="email" name="" id="" required>
-                <br>
-                <h3>Contraseña</h3>
-                <input type="password" name="" id="" required>
 
-                <br>    
-                <br>    
-                <button class="button" type="submit">INICIAR</button>
-                <button class="button" type="reset">LIMPIAR</button>
-
-                <br>
-                <br>
-                <br>
-                <a href="">Recuperar Contraseña</a>
+    <!-- Navbar con gradiente -->
+    <nav class="navbar navbar-expand-lg colordis">
+        <div class="container">
+            <a class="navbar-brand" href="#">GOE<span>GESTION DE OBSERVADOR ESTUDIANTIL</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="go.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="acudientes.html">acudientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"></a>
+                    </li>
+                </ul>
             </div>
-        </form>
+        </div>
     </nav>
-    <div class="img">
-        <div class="ribbon"></div>
+
+    <!-- Carousel Section -->
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" style="height: 40vh;">
+        <div class="carousel-inner" style="height: 40vh;">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active" >
+                <div class="hero-overlay"></div>
+                <img src="IMG/col1.jpg" class="d-block w-100" alt="Slide 1">
+                <div class="carousel-caption">
+                    <h1>BIENVENIDOS</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, nulla, tempore.</p>
+                    <a  href="go.html"class="btn btn-warning btn-lg">INGRESAR</a>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="hero-overlay"></div>
+                <img src="IMG/col2.jpg" class="d-block w-100" alt="Slide 1">
+                <div class="carousel-caption">
+                    <h1>BIENVENIDOS</h1>
+                    <p>We bring modern solutions to construction projects with a focus on quality.</p>
+                    <a  href="go.html" class="btn btn-warning btn-lg">INGRESAR</a>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <div class="hero-overlay"></div>
+                <img src="IMG/col3.jpg" class="d-block w-100" alt="Slide 3">
+                <div class="carousel-caption">
+                    <h1>BIENVENIDOS</h1>
+                    <p>Our team works with cutting-edge technology for optimal results.</p>
+                    <a  href="go.html" class="btn btn-warning btn-lg">INGRESAR</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
+
+    <div class="conten_blog">
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
