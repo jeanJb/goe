@@ -1,0 +1,132 @@
+
+
+/*DIV PERFIL*/
+.perfil{
+    width: 100%;
+    margin: 10px 0 20px 0 ;
+    min-height: 50vh;
+    max-height: auto;
+    padding: 10px;
+}
+
+.perfil .pp{
+    width: 32%;
+    height: 98%;
+    padding: 20px;
+    border-right: 1px black solid;
+    float: left;
+    margin-right: 20px;
+}
+
+.perfil .pp h2{
+    margin: 10px 0;
+}
+
+.perfil .pp .img{
+    width: 100%;
+    height: 50%;
+    border-bottom: black 1px solid;
+    padding: 10px;
+}
+
+.perfil .pp .img img{
+    width: 60%;
+    height: 100%;
+    border-radius: 80%;
+    margin: 0 20%;
+}
+
+/*DIV MATERIA*/
+.materia{
+    width: 49%;
+    float: left;
+    height: 44vh;
+    margin-right: 2%;
+}
+
+/*DIV CURSOS*/
+.cursos{
+    width: 49%;
+    float: left;
+    height: 44vh;
+}
+
+/* Modal */
+.modal_asis{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+    overflow: auto;
+}
+
+.modal_asis:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.modal_asis > div {
+	width: 40%;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+    transition: opacity 400ms ease-in;
+}
+
+
+.close {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -10px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+}
+.close:hover { background: linear-gradient(150deg, #00668c, #2177a8, #4491da); }
+
+.open{
+    visibility: visible;
+    transition: .6s;
+}
+
+.closed{
+    visibility: hidden;
+    transition: .6s;
+}
+
+/* inputs */
+
+input{
+    position: relative;
+    width: 90%;
+    height: 4vh;
+    padding: 5px 10px;
+    background: linear-gradient(150deg, #00668c, #2177a8, #4491da);
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+    font-weight: 350px;
+    letter-spacing: px;
+    box-shadow: 1px 3px 10px rgba(52, 52, 52, 0.627);
+}
