@@ -1,21 +1,34 @@
-.container {
-    max-width: 100%;
-	height: auto;
-    margin: 40px auto;
+.noti{
+    width: 100%;
+    height: 85vh;
+    padding: 0;
+    background-color: #385161b0;
 }
 
-.uno {
-	height: auto;
+.encabezado{
+    width: 100%;
+    height: 20vh;
+    background: #2d4352;
+    border-radius: 10px 10px 0 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-	height: auto;
+    place-items: center;
 }
 
-.container h3 {
-    margin-bottom: 1vh;
+.encabezado img{
+    width: 12%;
+    margin: 1% 4%;
+    background: rgb(219, 219, 219);
+    border-radius: 100%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
+.encabezado h1{
+    font-size: 60px;
+    margin: 0;
+}
+
+/* Modal */
 .modal_asis{
     width: 100%;
     height: 100vh;
@@ -31,6 +44,7 @@
 	-moz-transition: opacity 400ms ease-in;
 	transition: opacity 400ms ease-in;
 	pointer-events: none;
+    overflow: auto;
 }
 
 .modal_asis:target {
@@ -39,7 +53,7 @@
 }
 
 .modal_asis > div {
-	width: 60%;
+	width: 40%;
 	position: relative;
 	margin: 10% auto;
 	padding: 5px 20px 13px 20px;
@@ -67,14 +81,3 @@
 	box-shadow: 1px 1px 3px #000;
 }
 .close:hover { background: linear-gradient(150deg, #00668c, #2177a8, #4491da); }
-
-.open{
-    visibility: visible;
-    transition: .6s;
-}
-
-.closed{
-    visibility: hidden;
-    transition: .6s;
-}
-

@@ -10,8 +10,8 @@
 }
 
 .perfil .pp{
-    width: 28%;
-    height: 100%;
+    width: 32%;
+    height: 98%;
     padding: 20px;
     border-right: 1px black solid;
     float: left;
@@ -67,6 +67,7 @@
 	-moz-transition: opacity 400ms ease-in;
 	transition: opacity 400ms ease-in;
 	pointer-events: none;
+    overflow: auto;
 }
 
 .modal_asis:target {
@@ -75,7 +76,7 @@
 }
 
 .modal_asis > div {
-	width: 60%;
+	width: 40%;
 	position: relative;
 	margin: 10% auto;
 	padding: 5px 20px 13px 20px;
@@ -112,4 +113,20 @@
 .closed{
     visibility: hidden;
     transition: .6s;
+}
+
+/* inputs */
+
+input{
+    position: relative;
+    width: 90%;
+    height: 4vh;
+    padding: 5px 10px;
+    background: linear-gradient(150deg, #00668c, #2177a8, #4491da);
+    border-radius: 10px;
+    outline: none;
+    font-size: 18px;
+    font-weight: 350px;
+    letter-spacing: px;
+    box-shadow: 1px 3px 10px rgba(52, 52, 52, 0.627);
 }

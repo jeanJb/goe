@@ -1,7 +1,7 @@
 .cuadros{
-    width: 55%;
-    height: 80vh;
-    margin: 8% 1% 8% 5%;
+    width: 62%;
+    height: auto;
+    margin: 5% 1% 0 5%;
     float: left;
 }
 
@@ -11,12 +11,9 @@
     float: left;
     margin: 0 2% 2% 0;
     word-wrap: break-word;
-}
-
-.uno img{
-    width: 100%;
-    height: 30vh;
-    border-radius: 8px;
+    background: url(../IMG/ctjfr.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .dos{
@@ -31,16 +28,16 @@
     width: 60%;
     margin: 0 auto;
     border-radius: 30%;
-    border: 4px solid blueviolet;
+    border: 4px solid skyblue;
 }
 
 .dos h1, .dos p{
-    margin: 8px auto;
+    margin: 3px auto;
 }
 
 .tres{
-    width: 45%;
-    height: 33vh;
+    width: 95%;
+    height: 35vh;
     float: left;
     margin: 0 2% 2% 0;
 }
@@ -48,31 +45,16 @@
 .tres div{
     width: 100%;
     height: 100%;
-    border: 1px black solid;
     border-radius: 10px;
     overflow: auto;
-}
-
-.cuatro{
-    width: 45%;
-    height: 33vh;
-    float: left;
-    margin: 0 0 0 2%;
-}
-
-.cuatro div{
-    width: 100%;
-    height: 100%;
-    border: 1px black solid;
-    border-radius: 10px;
-    overflow: auto;
+    background: url(../IMG/portada.jpg);
 }
 
 .cell{
     width: 32%;
-    height: 67.3vh;
+    height: 80vh;
     float: left;
-    margin: 8% 0%;
+    margin: 5% 0 0 0;
     box-shadow: 4px 7px 8px rgba(0, 0, 0, 0.637), -2px -1px 8px rgba(0, 0, 0, 0.637);
     border: 1px solid black;
 }
@@ -83,4 +65,93 @@
     height: 4vh;
     background-color: black;
     border-radius: 30px;
+    z-index: 1;
+}
+.cell iframe{
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@keyframes slide{
+    0% {
+        left: 0;
+    }
+    10% {
+        left: 0;
+    }
+    20% {
+        left: -100%;
+    }
+    30% {
+        left: -100%;
+    }
+    40%{
+        left: -200%;
+    }
+    50% {
+        left: -200%;
+    }
+    55% {
+        left: -300%;
+    }
+    65% {
+        left: -300%;
+    }
+    66% {
+        left: -200%;
+    }
+    74% {
+        left: -200%;
+    }
+    75% {
+        left: -100%;
+    }
+    85%{
+        left: -100%;
+    }
+    90% {
+        left: 0;
+    }
+    100% {
+        left: 0;
+    }
+
+}
+
+.slider{
+    width: 100%;
+    height: 45vh;
+    overflow: hidden;
+    padding: 0;
+}
+
+figure{
+    position: relative;
+    left: 0;
+    width: 400%;
+    overflow: hidden;
+    animation: 16s slide infinite;
+}
+
+.slide{
+    position: relative;
+    width: 25%;
+    float: left;
+}
+
+.slide h1{
+    position: absolute;
+    width: 100%;
+    font-size: 3rem;
+    color: white;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0,0.5);
+    text-align: center;
+    margin-top: 50px;
+}
+
+.slider img{
+    width: 100%;
+    height: 500px;
 }
