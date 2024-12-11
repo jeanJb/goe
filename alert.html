@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="STYLES/diseño.css">
+    <link rel="stylesheet" href="STYLES/alert.css">
+    <title>GOE
+    </title>
+</head>
+<body>
+    <div class="menu colordis">
+        <div class="title">
+            <h1>GOE</h1>
+            <img src="IMG/GOE.jpg" alt="">
+        </div>
+
+        <ul>
+            <li><a href="home.php"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
+            <li><a href="observadores.php"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
+            <li><a href="asistencia.php"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
+            <li><a href="intro.php"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
+
+        </ul>
+    </div> 
+
+    <!-- nav -->
+
+    <nav class="nav colordis">
+        <ul>
+            <li><a href="alert.html"><img src="IMG/message-circle.svg" alt=""><!-- <p>Notificaciones</p> --></a></li>
+            <li><a href="perfil.php"><img src="IMG/user.svg" alt="" style="border: 1px #50c6e3 solid;"><!-- <p>Perfil</p> --></a></li>
+            <li><a href="exit.php"><img src="IMG/exit.svg" alt=""><!-- <p>Cerrar Sesion</p> --></a></li>
+        </ul>
+    </nav>  
+
+    <!--Contenido de la pagina-->
+    <div class="contenido">
+        <div class="colordiv noti">
+            <div class="encabezado">
+                <img src="IMG/notifications.svg" alt="">
+                <h1>Notificaciones</h1>
+            </div>
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <td>TEMA</td>
+                        <td>CONTENIDO</td>
+                        <td>VISUALIZAR</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Observacion</td>
+                        <td>Golpeo un niño</td>
+                        <td><a href="#openModal" class="button">VER</a></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+<!-- modal para actualizar y ver la asistencia -->
+
+<div id="openModal" class="modal_asis">
+    <div class="colordiv">
+        <a href="#close" id="close" class="close">X</a>
+        <h1 style="text-align: center;">NOTIFICACION</h1>
+        <br>
+        <h3>Observacion</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, laboriosam. Maxime rerum placeat blanditiis voluptatibus minima eligendi adipisci totam, fuga, autem assumenda quia pariatur, temporibus sunt ad quis porro commodi?</p>
+    </div>
+</div>
+
+<!--https://layers.to/layers/clv0q7xjj005dky0hzjj7rhtb-->
