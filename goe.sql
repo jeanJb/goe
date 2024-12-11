@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-09-2024 a las 20:55:04
+-- Tiempo de generación: 01-10-2024 a las 07:57:16
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `goe`
+-- Base de datos: `goe2`
 --
 
 DELIMITER $$
@@ -60,6 +60,12 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `contar_faltas_estudiante` (`doc` INT
     FROM observador
     WHERE documento = doc;
     RETURN doc;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `encriptar` (`clave` VARCHAR(40)) RETURNS VARBINARY(100)  BEGIN
+DECLARE claveencry varbinary(100);
+SET claveencry = AES_ENCRYPT(clave,'sena');
+RETURN claveencry;
 END$$
 
 CREATE DEFINER=`root`@`localhost` FUNCTION `obtenerobtener_rol_usuario` (`documento` INT) RETURNS VARCHAR(25) CHARSET utf8mb4 COLLATE utf8mb4_general_ci  BEGIN
@@ -114,30 +120,31 @@ DELIMITER ;
 
 CREATE TABLE `asistencia` (
   `idasistencia` int(11) NOT NULL COMMENT 'identificación de las asistencias de un curso',
+  `profesor` varchar(50) NOT NULL COMMENT 'Nombre del profesor que llena la asistencia',
   `documento` int(11) NOT NULL COMMENT 'número identificador del usuario',
   `estado_asis` varchar(30) NOT NULL COMMENT 'estado de la asistencia del estudiante',
   `IdMat` int(11) NOT NULL COMMENT 'identificación de la materia	',
-  `Fecha_asistencia` datetime DEFAULT NULL COMMENT 'fecha de registro de la asistencia	',
-  `Justificcion_inasistencia` varchar(250) NOT NULL COMMENT 'justificación de la inasistencia del estudiante	'
+  `fecha_asistencia` datetime DEFAULT NULL COMMENT 'fecha de registro de la asistencia	',
+  `justificacion_inasistencia` varchar(250) NOT NULL COMMENT 'justificación de la inasistencia del estudiante	'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='donde se registra la asistencia a clase del estudiante';
 
 --
 -- Volcado de datos para la tabla `asistencia`
 --
 
-INSERT INTO `asistencia` (`idasistencia`, `documento`, `estado_asis`, `IdMat`, `Fecha_asistencia`, `Justificcion_inasistencia`) VALUES
-(1, 1020509681, 'Presente', 3, '2024-09-03 00:00:00', 'N/A'),
-(2, 1020509682, 'Ausente', 3, '2024-09-12 00:00:00', 'N/A'),
-(3, 1020509683, 'Justificado', 3, '2024-09-28 00:00:00', 'N/A'),
-(4, 1020509684, 'Presente', 4, '2024-09-11 08:02:10', 'N/A'),
-(5, 1020509685, 'Ausente', 4, '2024-09-11 08:02:49', 'N/A'),
-(6, 1020509686, 'Justificado', 4, '2024-09-11 08:03:20', 'N/A'),
-(7, 1020509687, 'Presente', 4, '2024-09-13 08:03:09', 'N/A'),
-(8, 1020509688, 'Ausente', 4, '2024-09-04 08:03:38', 'N/A'),
-(9, 1022222221, 'Justificado', 4, '2024-09-04 08:03:49', 'N/A'),
-(10, 1022222222, 'Presente', 4, '2024-09-04 08:04:04', 'N/A'),
-(11, 1022222223, 'Ausente', 3, '2024-09-04 08:04:12', 'N/A'),
-(12, 1022222224, 'Justificado', 3, '2024-09-04 08:04:22', 'N/A');
+INSERT INTO `asistencia` (`idasistencia`, `profesor`, `documento`, `estado_asis`, `IdMat`, `fecha_asistencia`, `justificacion_inasistencia`) VALUES
+(1, '', 1020509681, 'Presente', 3, '2024-09-03 00:00:00', 'N/A'),
+(2, '', 1020509682, 'Ausente', 3, '2024-09-12 00:00:00', 'N/A'),
+(3, '', 1020509683, 'Justificado', 3, '2024-09-28 00:00:00', 'N/A'),
+(4, '', 1020509684, 'Presente', 4, '2024-09-11 08:02:10', 'N/A'),
+(5, '', 1020509685, 'Ausente', 4, '2024-09-11 08:02:49', 'N/A'),
+(6, '', 1020509686, 'Justificado', 4, '2024-09-11 08:03:20', 'N/A'),
+(7, '', 1020509687, 'Presente', 4, '2024-09-13 08:03:09', 'N/A'),
+(8, '', 1020509688, 'Ausente', 4, '2024-09-04 08:03:38', 'N/A'),
+(9, '', 1022222221, 'Justificado', 4, '2024-09-04 08:03:49', 'N/A'),
+(10, '', 1022222222, 'Presente', 4, '2024-09-04 08:04:04', 'N/A'),
+(11, '', 1022222223, 'Ausente', 3, '2024-09-04 08:04:12', 'N/A'),
+(14, 'Farasica', 1029143097, 'Presente', 8, '2024-09-29 16:24:23', 'N/A');
 
 -- --------------------------------------------------------
 
@@ -147,7 +154,6 @@ INSERT INTO `asistencia` (`idasistencia`, `documento`, `estado_asis`, `IdMat`, `
 
 CREATE TABLE `curso` (
   `grado` int(11) NOT NULL COMMENT 'nombre o número del curso al que será agregado cada estudiante',
-  `documento` int(11) NOT NULL COMMENT 'identificación de los estudiantes asignados a los cursos',
   `salon` varchar(30) NOT NULL COMMENT 'salón asignado a cada curso'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='donde se asigna a cada estudiante a un grupo';
 
@@ -155,17 +161,16 @@ CREATE TABLE `curso` (
 -- Volcado de datos para la tabla `curso`
 --
 
-INSERT INTO `curso` (`grado`, `documento`, `salon`) VALUES
-(701, 1020509682, '201'),
-(702, 1020509686, '201'),
-(703, 1020509687, '201'),
-(801, 1020509687, '4'),
-(808, 1020509683, '101'),
-(1001, 1020509685, '202'),
-(1002, 1020509688, '202'),
-(1101, 1020509681, '101'),
-(1102, 1022222221, '101'),
-(1103, 1022222222, '101');
+INSERT INTO `curso` (`grado`, `salon`) VALUES
+(701, '201'),
+(702, '201'),
+(703, '201'),
+(808, '101'),
+(1001, '202'),
+(1002, '202'),
+(1101, '101'),
+(1102, '101'),
+(1103, '101');
 
 -- --------------------------------------------------------
 
@@ -193,9 +198,10 @@ INSERT INTO `directorio` (`id_detalle`, `documento`, `rh_estudiante`, `eps`, `fe
 (6, 1020509682, 'O+', 'SALUD TOTAL', '2008-02-02', 'N/A', 'JOHN GOMES', '1023460998', '3103933431'),
 (7, 1020509686, 'AB+', 'COLSUBSIDIO', '2008-05-03', 'N/A', 'ERICK TORREZ', '1123460998', '3125433598'),
 (8, 1022222222, 'A+', 'SANITAS', '2008-12-04', 'N/A', 'JHONATAN LOPEZ', '1023460998', '3508856383'),
-(9, 1020509687, 'A-', 'COMPENSAR', '2008-01-05', 'N/A', 'MONICA MARTÍNEZ', '1023460998', '3156783321'),
+(9, 1020509687, 'A-', 'COMPENSAR', '2008-01-05', 'Alsaimer', 'MONICA MARTÍNEZ', '1023460998', '3156783321'),
 (10, 1020509683, 'O-', 'SALUD TOTAL', '2008-10-06', 'N/A', 'CATALINA VARGAS', '1023460998', '3402133244'),
-(125478889, 1020509686, 'A+', 'Compensar', '2024-09-04', 'no tiene', 'sonia', '11111111', '1234568');
+(125478889, 1020509686, 'A+', 'Compensar', '2024-09-04', 'no tiene', 'sonia', '11111111', '1234568'),
+(125478890, 1029143097, 'A+', 'Compensar', '2006-05-18', 'Alsaimer', 'Ledis Hernandez', '3107654567', '123456754');
 
 -- --------------------------------------------------------
 
@@ -207,17 +213,20 @@ CREATE TABLE `horario` (
   `Idhorario` int(11) NOT NULL COMMENT 'identificación del horario de un curso',
   `IdMat` int(11) NOT NULL COMMENT 'identificación de la materia',
   `grado` int(11) NOT NULL COMMENT 'número del grado',
-  `Fecha_inicio` datetime NOT NULL COMMENT 'fecha de inicio del horario del curso',
-  `Fecha_fin` datetime NOT NULL COMMENT 'fecha de fin del horario de un curso'
+  `dia` varchar(20) NOT NULL COMMENT 'se especifica el dia de la semana que semana es para saber cuando se ve esa materia',
+  `Fecha_inicio` time NOT NULL COMMENT 'fecha de inicio del horario del curso',
+  `Fecha_fin` time NOT NULL COMMENT 'fecha de fin del horario de un curso'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='donde se lleva un control de las clases que toma un curso durante el día';
 
 --
 -- Volcado de datos para la tabla `horario`
 --
 
-INSERT INTO `horario` (`Idhorario`, `IdMat`, `grado`, `Fecha_inicio`, `Fecha_fin`) VALUES
-(1, 1, 1101, '2024-04-05 09:00:00', '2024-04-05 09:00:00'),
-(2, 2, 808, '2024-04-05 09:00:00', '2024-04-05 09:00:00');
+INSERT INTO `horario` (`Idhorario`, `IdMat`, `grado`, `dia`, `Fecha_inicio`, `Fecha_fin`) VALUES
+(1, 1, 1101, 'Semana 1, dia 1', '12:30:00', '14:20:00'),
+(2, 2, 808, 'Semana 1, dia 1', '12:30:00', '14:20:00'),
+(3, 7, 703, 'Semana 1, dia 1', '12:30:00', '14:20:00'),
+(4, 8, 703, 'Semana 1, dia1', '14:20:00', '16:40:00');
 
 -- --------------------------------------------------------
 
@@ -306,38 +315,44 @@ INSERT INTO `rol` (`id_rol`, `nom_rol`) VALUES
 CREATE TABLE `usuario` (
   `documento` int(11) NOT NULL COMMENT 'número identificador del usuario',
   `id_rol` int(11) NOT NULL COMMENT 'rol asignado a cada usuario',
-  `email` varchar(25) NOT NULL COMMENT 'correo registrado por cada usuario',
-  `clave` varchar(30) NOT NULL COMMENT 'clave registrada por el usuario',
+  `email` varchar(40) NOT NULL COMMENT 'correo registrado por cada usuario',
+  `clave` varbinary(150) NOT NULL COMMENT 'clave registrada por el usuario',
   `tipo_doc` varchar(10) NOT NULL COMMENT 'tipo de documento del usuario',
-  `nombres` varchar(30) NOT NULL COMMENT 'primer nombre del usuario',
-  `apellidos` varchar(30) DEFAULT NULL COMMENT 'segundo apellido del usuario',
+  `nombre1` varchar(30) NOT NULL COMMENT 'primer nombre del usuario',
+  `nombre2` varchar(30) DEFAULT NULL COMMENT 'segundo nombre del usuario',
+  `apellido1` varchar(30) DEFAULT NULL COMMENT 'primer apellido del usuario',
+  `apellido2` varchar(30) DEFAULT NULL COMMENT 'segundo apellido del usuario',
   `telefono` varchar(30) NOT NULL COMMENT 'teléfono del usuario',
   `direccion` varchar(30) NOT NULL COMMENT 'dirección del usuario',
-  `foto` varchar(255) DEFAULT NULL COMMENT 'foto del usuario'
+  `foto` varchar(255) DEFAULT NULL COMMENT 'foto del usuario',
+  `grado` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='donde se registran los datos del usuario que ingresa al sistema';
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`documento`, `id_rol`, `email`, `clave`, `tipo_doc`, `nombres`, `apellidos`, `telefono`, `direccion`, `foto`) VALUES
-(1020509681, 101, 'pedro.torrez@example.com', 'password123', 'T.I', 'Pedro', 'Torrez', '3325678998', 'CR 56 DIG 6', NULL),
-(1020509682, 101, 'luis.martinez@example.com', 'password123', 'T.I', 'Luis', 'Martínez', '3112345678', 'CLL 3 #10', NULL),
-(1020509683, 101, 'claudia.rodriguez@example', 'password123', 'T.I', 'Claudia', 'Rodríguez', '3147654321', 'AV 7 #40', NULL),
-(1020509684, 101, 'maria.mendoza@example.com', 'password123', 'T.I', 'María', 'Mendoza', '3123451234', 'AV 9 #55', NULL),
-(1020509685, 102, 'vanessa.ramirez@example.c', 'password123', 'C.C', 'Vanessa', 'Ramírez', '3109876543', 'CR 8 #70', NULL),
-(1020509686, 102, 'daniela.suarez@example.co', 'password123', 'C.C', 'Daniela', 'Suárez', '3208901234', 'CLL 12 #120', NULL),
-(1020509687, 101, 'alejandro.diaz@example.co', 'password123', 'T.I', 'Alejandro', 'Díaz', '3207654321', 'CLL 25 #160', NULL),
-(1020509688, 101, 'natalia.gomez@example.com', 'password123', 'T.I', 'Natalia', 'Gómez', '3209876543', 'CLL 30 #200', NULL),
-(1022222221, 101, 'laura.garcia@example.com', 'password123', 'T.I', 'Laura', 'García', '3106543210', 'CR 22 #12', NULL),
-(1022222222, 104, 'hugo.martinez@example.com', 'password123', 'C.C', 'Hugo', 'Martínez', '3103933431', 'CLL 11 #7 CENTRO', NULL),
-(1022222223, 102, 'javier.cruz@example.com', 'password123', 'C.C', 'Javier', 'Cruz', '3134567890', 'CLL 5 #20', NULL),
-(1022222224, 102, 'natalia.perez@example.com', 'password123', 'C.C', 'Natalia', 'Pérez', '3198765432', 'KR 5 #50', NULL),
-(1022222225, 103, 'julian.hurtado@example.co', 'password123', 'C.C', 'Julián', 'Hurtado', '3195432109', 'AV 12 #90', NULL),
-(1022222226, 103, 'ricardo.sanchez@example.c', 'password123', 'C.C', 'Ricardo', 'Sánchez', '3203456789', 'CLL 22 #140', NULL),
-(1022222227, 101, 'andrea.patino@example.com', 'password123', 'T.I', 'Andrea', 'Patiño', '3208765432', 'CLL 28 #180', NULL),
-(1023460992, 103, 'sebastian.gomez@example.c', 'password123', 'C.C', 'Sebastián', 'Gómez', '3109876543', 'CR 50 #190', NULL),
-(1023460993, 101, 'catherine.moreno@example.', 'password123', 'T.I', 'Catherine', 'Moreno', '3106543210', 'CR 40 #150', NULL);
+INSERT INTO `usuario` (`documento`, `id_rol`, `email`, `clave`, `tipo_doc`, `nombre1`, `nombre2`, `apellido1`, `apellido2`, `telefono`, `direccion`, `foto`, `grado`) VALUES
+(1020509681, 101, 'pedro.torrez@example.com', 0x70617373776f7264313233, 'T.I', 'Pedro', '', 'Torrez', '', '3325678998', 'CR 56 DIG 6', NULL, 703),
+(1020509682, 101, 'luis.martinez@example.com', 0x70617373776f7264313233, 'T.I', 'Luis', '', 'Martínez', '', '3112345678', 'CLL 3 #10', NULL, NULL),
+(1020509683, 101, 'claudia.rodriguez@example', 0x70617373776f7264313233, 'T.I', 'Claudia', '', 'Rodríguez', '', '3147654321', 'AV 7 #40', NULL, NULL),
+(1020509684, 101, 'maria.mendoza@example.com', 0x70617373776f7264313233, 'T.I', 'María', '', 'Mendoza', '', '3123451234', 'AV 9 #55', NULL, NULL),
+(1020509685, 102, 'vanessa.ramirez@example.c', 0x70617373776f7264313233, 'C.C', 'Vanessa', '', 'Ramírez', '', '3109876543', 'CR 8 #70', NULL, NULL),
+(1020509686, 102, 'daniela.suarez@example.co', 0x70617373776f7264313233, 'C.C', 'Daniela', '', 'Suárez', '', '3208901234', 'CLL 12 #120', NULL, NULL),
+(1020509687, 101, 'alejandro.diaz@example.co', 0x70617373776f7264313233, 'T.I', 'Alejandro', 'Carlos', 'Díaz', 'Gomez', '3207654321', 'CLL 25 #160', '', 703),
+(1020509688, 101, 'natalia.gomez@example.com', 0x70617373776f7264313233, 'T.I', 'Natalia', '', 'Gómez', '', '3209876543', 'CLL 30 #200', NULL, NULL),
+(1022222221, 101, 'laura.garcia@example.com', 0x70617373776f7264313233, 'T.I', 'Laura', '', 'García', '', '3106543210', 'CR 22 #12', NULL, NULL),
+(1022222222, 104, 'hugo.martinez@example.com', 0x266ae4a5fad5b76152694e199746600c, 'C.C', 'Hugo', '', 'Martínez', '', '3103933431', 'CLL 11 #7 CENTRO', NULL, NULL),
+(1022222223, 102, 'javier.cruz@example.com', 0x70617373776f7264313233, 'C.C', 'Javier', '', 'Cruz', '', '3134567890', 'CLL 5 #20', NULL, NULL),
+(1022222224, 102, 'natalia.perez@example.com', 0x70617373776f7264313233, 'C.C', 'Natalia', '', 'Pérez', '', '3198765432', 'KR 5 #50', NULL, NULL),
+(1022222225, 103, 'julian.hurtado@example.co', 0x70617373776f7264313233, 'C.C', 'Julián', '', 'Hurtado', '', '3195432109', 'AV 12 #90', NULL, NULL),
+(1022222226, 103, 'ricardo.sanchez@example.c', 0x70617373776f7264313233, 'C.C', 'Ricardo', '', 'Sánchez', '', '3203456789', 'CLL 22 #140', NULL, NULL),
+(1022222227, 101, 'andrea.patino@example.com', 0x70617373776f7264313233, 'T.I', 'Andrea', '', 'Patiño', '', '3208765432', 'CLL 28 #180', NULL, NULL),
+(1023460992, 103, 'sebastian.gomez@example.c', 0x70617373776f7264313233, 'C.C', 'Sebastián', '', 'Gómez', '', '3109876543', 'CR 50 #190', NULL, NULL),
+(1023460993, 101, 'catherine.moreno@example.', 0x70617373776f7264313233, 'T.I', 'Catherine', '', 'Moreno', '', '3106543210', 'CR 40 #150', NULL, NULL),
+(1029143097, 101, 'sebastiancardenash18@gmail.com', 0x5407498f41e1d4c5e6aa7c4a9440abbb, 'C.C', 'Sebastian', '', 'Cardenas', 'Hernandez', '30576454321', 'calle 6', '', 703),
+(1032678992, 101, 'jaimebolanos@gmail.com', 0xff3c7d878e10bdf4bab2ded0d2530ad9, '', 'Jaime', 'Jean Pierre', 'Bolaños', 'Bedoya', '3057648201', 'cll 11 carrera 10', NULL, 703),
+(1127342346, 104, 'yenesis@gmail.com', 0xac9d03377f1789686810300b62a8eea3, '', 'Yenesis', 'Veronica', 'Sanabria', 'Leon', '21345678', 'Direccion', NULL, 703);
 
 --
 -- Disparadores `usuario`
@@ -369,8 +384,7 @@ ALTER TABLE `asistencia`
 -- Indices de la tabla `curso`
 --
 ALTER TABLE `curso`
-  ADD PRIMARY KEY (`grado`),
-  ADD KEY `FKCurso544935` (`documento`);
+  ADD PRIMARY KEY (`grado`);
 
 --
 -- Indices de la tabla `directorio`
@@ -411,7 +425,8 @@ ALTER TABLE `rol`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`documento`),
-  ADD KEY `FKusuario738911` (`id_rol`);
+  ADD KEY `FKusuario738911` (`id_rol`),
+  ADD KEY `fk_usuario_grado` (`grado`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -421,7 +436,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
-  MODIFY `idasistencia` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación de las asistencias de un curso', AUTO_INCREMENT=14;
+  MODIFY `idasistencia` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación de las asistencias de un curso', AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `curso`
@@ -433,13 +448,13 @@ ALTER TABLE `curso`
 -- AUTO_INCREMENT de la tabla `directorio`
 --
 ALTER TABLE `directorio`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT COMMENT 'la identificación asignada al detalle del observador', AUTO_INCREMENT=125478890;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT COMMENT 'la identificación asignada al detalle del observador', AUTO_INCREMENT=125478891;
 
 --
 -- AUTO_INCREMENT de la tabla `horario`
 --
 ALTER TABLE `horario`
-  MODIFY `Idhorario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación del horario de un curso', AUTO_INCREMENT=3;
+  MODIFY `Idhorario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación del horario de un curso', AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `materia`
@@ -471,12 +486,6 @@ ALTER TABLE `asistencia`
   ADD CONSTRAINT `FKasistencia701223` FOREIGN KEY (`IdMat`) REFERENCES `materia` (`idmat`);
 
 --
--- Filtros para la tabla `curso`
---
-ALTER TABLE `curso`
-  ADD CONSTRAINT `FKCurso544935` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`);
-
---
 -- Filtros para la tabla `directorio`
 --
 ALTER TABLE `directorio`
@@ -499,7 +508,8 @@ ALTER TABLE `observador`
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD CONSTRAINT `FKusuario738911` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
+  ADD CONSTRAINT `FKusuario738911` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`),
+  ADD CONSTRAINT `fk_usuario_grado` FOREIGN KEY (`grado`) REFERENCES `curso` (`grado`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

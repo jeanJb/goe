@@ -1,13 +1,28 @@
+<?php
+/* session_start();
+if(isset($_SESSION['documento'])){
+    header('Location:index.html');
+
+} */
+
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header('Pragma:no-cache');
+header("Expires:0");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> -->
+    <link rel="stylesheet" href="STYLES/Bootstrap/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="acudiente.css">
 
 </head>
@@ -80,16 +95,18 @@
                         <h2>BIENVENIDOS</h2>
                         <p>Estamos felices de tenerte de vuelta.</p>
                     </div>
+                    <form action="loginacu.php" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Documento acudiente">
+                        <input type="text" name="txtacu" class="form-control form-control-lg bg-light fs-6" placeholder="Documento acudiente" name="txtpass">
+                    </div>
+                    <div class="input-group mb-3"> 
+                        <input type="text" name="txtdoc" class="form-control form-control-lg bg-light fs-6" placeholder="Documento Estudiante" name="txtdoc" >
+                    </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Documento Estudiante">
+                        <button class="btn btn-lg btn-primary w-100 fs-6" >Login</button>
                     </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <button class="btn btn-lg btn-primary w-100 fs-6">Login</button>
-                    </div>
+                    </form>
             </div> 
     
             </div>
