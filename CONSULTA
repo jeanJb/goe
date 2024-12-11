@@ -1,2 +1,0 @@
-SELECT u.NOMBRES, u.APELLIDOS, o.Descripcion AS Tipo_Falta FROM usuarios u 
-INNER JOIN observador o ON u.DOCUMENTO = o.DOCUMENTO WHERE o.Descripcion IS NOT NULL;
