@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-12-2024 a las 18:09:42
+-- Tiempo de generación: 07-03-2025 a las 02:57:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `goe2`
+-- Base de datos: `goe`
 --
 
 -- --------------------------------------------------------
@@ -34,28 +34,21 @@ CREATE TABLE `asistencia` (
   `estado_asis` varchar(30) NOT NULL COMMENT 'estado de la asistencia del estudiante',
   `IdMat` int(11) NOT NULL COMMENT 'identificación de la materia	',
   `fecha_asistencia` datetime DEFAULT NULL COMMENT 'fecha de registro de la asistencia	',
-  `justificacion_inasistencia` varchar(250) NOT NULL COMMENT 'justificación de la inasistencia del estudiante	'
+  `justificacion_inasistencia` varchar(250) NOT NULL COMMENT 'justificación de la inasistencia del estudiante	',
+  `idlistado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='donde se registra la asistencia a clase del estudiante';
 
 --
 -- Volcado de datos para la tabla `asistencia`
 --
 
-INSERT INTO `asistencia` (`idasistencia`, `profesor`, `documento`, `estado_asis`, `IdMat`, `fecha_asistencia`, `justificacion_inasistencia`) VALUES
-(1, '', 1020509681, 'Presente', 3, '2024-09-03 00:00:00', 'N/A'),
-(2, '', 1020509682, 'Ausente', 3, '2024-09-12 00:00:00', 'N/A'),
-(3, '', 1020509683, 'Justificado', 3, '2024-09-28 00:00:00', 'N/A'),
-(4, '', 1020509684, 'Presente', 4, '2024-09-11 08:02:10', 'N/A'),
-(5, '', 1020509685, 'Ausente', 4, '2024-09-11 08:02:49', 'N/A'),
-(6, '', 1020509686, 'Justificado', 4, '2024-09-11 08:03:20', 'N/A'),
-(7, '', 1020509687, 'Presente', 4, '2024-09-13 08:03:09', 'N/A'),
-(8, '', 1020509688, 'Ausente', 4, '2024-09-04 08:03:38', 'N/A'),
-(9, '', 1022222221, 'Justificado', 4, '2024-09-04 08:03:49', 'N/A'),
-(10, '', 1022222222, 'Presente', 4, '2024-09-04 08:04:04', 'N/A'),
-(11, '', 1022222223, 'Ausente', 3, '2024-09-04 08:04:12', 'N/A'),
-(14, 'Farasica', 1029143097, 'Presente', 8, '2024-09-29 16:24:23', 'N/A'),
-(15, 'Luis Eduardo', 1029143097, 'Presente', 8, '2024-12-04 21:19:12', 'N/A'),
-(16, 'Luis Eduardo', 1023460993, 'Presente', 8, '2024-12-06 17:27:55', 'N/A');
+INSERT INTO `asistencia` (`idasistencia`, `profesor`, `documento`, `estado_asis`, `IdMat`, `fecha_asistencia`, `justificacion_inasistencia`, `idlistado`) VALUES
+(21, 'Genesis Sanabria', 1020509681, 'Excusa', 1, '2025-02-07 21:41:00', 'Cita mediaca', 1),
+(22, 'Genesis Sanabria', 1020509687, 'Asistio', 1, '2025-02-07 21:41:00', 'N/A', 1),
+(23, 'Genesis Sanabria', 1029143097, 'Asistio', 1, '2025-02-07 21:41:00', 'N/A', 1),
+(24, 'Genesis Sanabria', 1032678992, 'Asistio', 1, '2025-02-07 21:41:00', 'N/A', 1),
+(222, 'farasica', 1021664834, 'precente', 1, '2025-03-06 10:30:00', 'NA', 1),
+(223, 'sandra', 1021664834, 'ausente', 3, '2025-03-06 14:33:14', 'enfermo', 1);
 
 -- --------------------------------------------------------
 
@@ -73,7 +66,7 @@ CREATE TABLE `curso` (
 --
 
 INSERT INTO `curso` (`grado`, `salon`) VALUES
-(1, 'N/A'),
+(601, 'N/A'),
 (701, '201'),
 (702, '201'),
 (703, '201'),
@@ -81,8 +74,27 @@ INSERT INTO `curso` (`grado`, `salon`) VALUES
 (1001, '202'),
 (1002, '202'),
 (1101, '101'),
-(1102, '101'),
-(1103, '101');
+(1102, '102'),
+(1103, '103');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `curso_materia`
+--
+
+CREATE TABLE `curso_materia` (
+  `id_relacion` int(11) NOT NULL,
+  `grado` int(11) NOT NULL,
+  `idmat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `curso_materia`
+--
+
+INSERT INTO `curso_materia` (`id_relacion`, `grado`, `idmat`) VALUES
+(1, 1103, 11);
 
 -- --------------------------------------------------------
 
@@ -107,12 +119,12 @@ CREATE TABLE `directorio` (
 --
 
 INSERT INTO `directorio` (`id_detalle`, `documento`, `rh_estudiante`, `eps`, `fecha_naci`, `enfermedades`, `nom_acu`, `telefono_acu`, `doc_acu`) VALUES
-(6, 1020509682, 'O+', 'SALUD TOTAL', '2008-02-02', 'N/A', 'JOHN GOMES', '1023460998', '3103933431'),
 (7, 1020509686, 'AB+', 'COLSUBSIDIO', '2008-05-03', 'N/A', 'ERICK TORREZ', '1123460998', '3125433598'),
 (8, 1022222222, 'A+', 'SANITAS', '2008-12-04', 'N/A', 'JHONATAN LOPEZ', '1023460998', '3508856383'),
 (9, 1020509687, 'A-', 'COMPENSAR', '2008-01-05', 'Alsaimer', 'MONICA MARTÍNEZ', '1023460998', '3156783321'),
 (10, 1020509683, 'O-', 'SALUD TOTAL', '2008-10-06', 'N/A', 'CATALINA VARGAS', '1023460998', '3402133244'),
-(125478890, 1029143097, 'A+', 'Compensar', '2006-05-18', 'N/A', 'Ledis Hernandez', '3107654567', '123456754'),
+(12, 1021664834, 'o+', 'salud total', '2003-07-20', 'no', 'edith martinez', '3165485738', '1023860953'),
+(125478890, 1029143097, 'A+', 'Compensar', '2006-05-18', 'N/A', 'Ledis Hernandez', '3107654567', '1234567544'),
 (1029143096, 1029143096, '', '', '0000-00-00', NULL, '', '', '');
 
 -- --------------------------------------------------------
@@ -143,6 +155,23 @@ INSERT INTO `horario` (`Idhorario`, `IdMat`, `grado`, `dia`, `Fecha_inicio`, `Fe
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `listado`
+--
+
+CREATE TABLE `listado` (
+  `idlistado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `listado`
+--
+
+INSERT INTO `listado` (`idlistado`) VALUES
+(1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `materia`
 --
 
@@ -165,7 +194,8 @@ INSERT INTO `materia` (`idmat`, `nomb_mat`) VALUES
 (7, 'EDU.FISICA'),
 (8, 'FILOSOFIA'),
 (9, 'SOCIALES'),
-(10, 'QUIMICA');
+(10, 'QUIMICA'),
+(11, 'Economias');
 
 -- --------------------------------------------------------
 
@@ -189,25 +219,31 @@ CREATE TABLE `observador` (
 --
 
 INSERT INTO `observador` (`idobservador`, `documento`, `fecha`, `descripcion_falta`, `compromiso`, `firma`, `seguimiento`, `falta`) VALUES
-(1, 1020509681, '0000-00-00', 'NO TRAJO EL UNIFORME malk', 'Nose', 'Leve', 'Genesis Sanabria', 'Leve'),
-(2, 1020509682, '2024-01-05', 'NO TRAJO LA TAREA', 'NA', 'NA', 'PEDRO', 'MEDIA'),
 (3, 1020509683, '2024-09-06', 'LLEGO TARDE A CLASE', 'NA', 'NA', 'SARA', 'MEDIA'),
 (4, 1020509684, '2024-09-06', 'LLEGO TARDE A CLASE', 'NA', 'NA', 'KAOMI', 'MEDIA'),
-(5, 1020509685, '2024-09-06', 'LLEGO TARDE A CLASE', 'NA', 'NA', 'SANDRA', 'GRAVE'),
-(40, 1020509687, '2024-09-10', 'se porto mal', 'no lo vuelve hacer', '', 'se le hara', 'grave'),
-(111, 1029143097, '2024-12-01', 'Irrespeto a sus companeros', 'Manejar un mejor vocabulario', NULL, 'Genesis Sanabria', 'Leve');
+(5, 1020509685, '2024-09-06', 'LLEGO TARDE A CLASE', 'NA', 'Grave', 'SANDRA', 'Grave'),
+(40, 1020509687, '2024-09-10', 'se porto uy mal', 'no lo vuelve hacer', 'Grave', 'se le hara', 'Grave'),
+(111, 1029143097, '2024-12-01', 'Irrespeto a sus companeros', 'Manejar un mejor vocabulario', NULL, 'Genesis Sanabria', 'Leve'),
+(100000000, 1021664834, '2025-03-06', 'el no asistió a clase de inglés, dice que estuvo enfermo, pero Sin embargo no presento la excusa ', '', 'porfe-ingle_', '', 'leve');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rofesor_materia`
+-- Estructura de tabla para la tabla `profesor_materia`
 --
 
-CREATE TABLE `rofesor_materia` (
+CREATE TABLE `profesor_materia` (
   `id_relacion` int(11) NOT NULL,
   `documento` int(11) NOT NULL,
   `idMat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `profesor_materia`
+--
+
+INSERT INTO `profesor_materia` (`id_relacion`, `documento`, `idMat`) VALUES
+(1, 2345678, 10);
 
 -- --------------------------------------------------------
 
@@ -259,26 +295,25 @@ CREATE TABLE `usuario` (
 INSERT INTO `usuario` (`documento`, `id_rol`, `email`, `clave`, `tipo_doc`, `nombre1`, `nombre2`, `apellido1`, `apellido2`, `telefono`, `direccion`, `foto`, `grado`) VALUES
 (2345678, 102, 'juan@gmail.com', 0x7ef8ec6b672fd0665dd20e30bdd52c53, 'C.C', 'Juan ', 'Pablo ', 'Paez ', 'Hernandez', '23456789', 'transversal', NULL, NULL),
 (1020509681, 101, 'pedro.torrez@example.com', 0x70617373776f7264313233, 'T.I', 'Pedro', '', 'Torrez', '', '3325678998', 'CR 56 DIG 6', NULL, 703),
-(1020509682, 101, 'luis.martinez@example.com', 0x70617373776f7264313233, 'T.I', 'Luis', '', 'Martínez', '', '3112345678', 'CLL 3 #10', NULL, NULL),
-(1020509683, 101, 'claudia.rodriguez@example', 0x266ae4a5fad5b76152694e199746600c, 'T.I', 'Claudia', '', 'Rodríguez', '', '3147654321', 'AV 7 #40', NULL, NULL),
+(1020509683, 101, 'claudia.rodriguez@example', 0x266ae4a5fad5b76152694e199746600c, 'T.I', 'Claudia', '', 'Rodríguez', '', '3147654321', 'AV 7 #40', NULL, 1001),
 (1020509684, 101, 'maria.mendoza@example.com', 0x70617373776f7264313233, 'T.I', 'María', '', 'Mendoza', '', '3123451234', 'AV 9 #55', NULL, NULL),
-(1020509685, 102, 'vanessa.ramirez@example.c', 0x70617373776f7264313233, 'C.C', 'Vanessa', '', 'Ramírez', '', '3109876543', 'CR 8 #70', NULL, NULL),
+(1020509685, 102, 'vanessa.ramirez@example.c', 0x70617373776f7264313233, 'C.C', 'Vanessa', '', 'Ramírez', '', '3109876543', 'CR 8 #70', NULL, 601),
 (1020509686, 101, 'daniela.suarez@example.co', 0x70617373776f7264313233, 'C.C', 'Daniela', '', 'Suárez', '', '3208901234', 'CLL 12 #120', NULL, 701),
 (1020509687, 101, 'alejandro.diaz@example.co', 0x70617373776f7264313233, 'T.I', 'Alejandro', 'Carlos', 'Díaz', 'Gomez', '3207654321', 'CLL 25 #160', '', 703),
 (1020509688, 101, 'natalia.gomez@example.com', 0x70617373776f7264313233, 'T.I', 'Natalia', '', 'Gómez', '', '3209876543', 'CLL 30 #200', NULL, NULL),
+(1021664834, 101, 'sebastianriveromartinez@gmail.com', 0x1021664834, 'cc', 'johann', 'sebastian', 'rivero', 'martinez', '3124626336', 'calle 28 c bis su # 8- 19 este', '.', 1103),
 (1022222221, 101, 'laura.garcia@example.com', 0x70617373776f7264313233, 'T.I', 'Laura', '', 'García', '', '3106543210', 'CR 22 #12', NULL, NULL),
 (1022222222, 104, 'hugo.martinez@example.com', 0x266ae4a5fad5b76152694e199746600c, 'C.C', 'Hugo', '', 'Martínez', '', '3103933431', 'CLL 11 #7 CENTRO', NULL, NULL),
-(1022222223, 102, 'javier.cruz@example.com', 0x70617373776f7264313233, 'C.C', 'Javier', '', 'Cruz', '', '3134567890', 'CLL 5 #20', NULL, NULL),
-(1022222224, 102, 'natalia.perez@example.com', 0x70617373776f7264313233, 'C.C', 'Natalia', '', 'Pérez', '', '3198765432', 'KR 5 #50', NULL, NULL),
+(1022222223, 102, 'javier.cruz@example.com', 0x70617373776f7264313233, 'C.C', 'Javier', '', 'Cruz', '', '3134567890', 'CLL 5 #20', NULL, 701),
+(1022222224, 102, 'natalia.perez@example.com', 0x70617373776f7264313233, 'C.C', 'Natalia', '', 'Pérez', '', '3198765432', 'KR 5 #50', NULL, 1001),
 (1022222225, 103, 'julian.hurtado@example.co', 0x70617373776f7264313233, 'C.C', 'Julián', '', 'Hurtado', '', '3195432109', 'AV 12 #90', NULL, NULL),
-(1022222226, 103, 'ricardo.sanchez@example.c', 0x70617373776f7264313233, 'C.C', 'Ricardo', '', 'Sánchez', '', '3203456789', 'CLL 22 #140', NULL, NULL),
 (1022222227, 101, 'andrea.patino@example.com', 0x70617373776f7264313233, 'T.I', 'Andrea', '', 'Patiño', '', '3208765432', 'CLL 28 #180', NULL, NULL),
 (1023460992, 103, 'sebastian.gomez@example.c', 0x70617373776f7264313233, 'C.C', 'Sebastián', '', 'Gómez', '', '3109876543', 'CR 50 #190', NULL, NULL),
 (1023460993, 101, 'catherine.moreno@example.', 0x70617373776f7264313233, 'T.I', 'Catherine', '', 'Moreno', '', '3106543210', 'CR 40 #150', NULL, 701),
 (1029143096, 101, 'santicardenash@gmail.com', 0x9eec238a06e54f7bc63b2a6c05d6b981, 'C.C', 'SANTIAGO', '', 'CARDENAS', 'HERNANDEZ', '3107525662', 'Direccion', NULL, NULL),
 (1029143097, 101, 'sebastiancardenash18@gmail.com', 0x5407498f41e1d4c5e6aa7c4a9440abbb, 'C.C', 'Sebastian', '', 'Cardenas', 'Hernandez', '30576454321', 'calle 6', '', 703),
 (1032678992, 101, 'jaimebolanos@gmail.com', 0xff3c7d878e10bdf4bab2ded0d2530ad9, '', 'Jaime', 'Jean Pierre', 'Bolaños', 'Bedoya', '3057648201', 'cll 11 carrera 10', NULL, 703),
-(1127342346, 104, 'yenesis@gmail.com', 0xac9d03377f1789686810300b62a8eea3, '', 'Genesis', 'Veronica', 'Sanabria', 'Leon', '21345678', 'Direccion', '', 703),
+(1127342346, 104, 'yenesis@gmail.com', 0xac9d03377f1789686810300b62a8eea3, '', 'Genesis', 'Veronica', 'Sanabria', 'Leon', '21345678', 'Direccion trv', '', 703),
 (2147483647, 102, 'juan@gmail.com', 0x7ef8ec6b672fd0665dd20e30bdd52c53, 'C.C', 'juan', 'pablo', 'paez', 'hernandez', '12345678', 'transversal 16 A este #19-43 S', NULL, 703);
 
 --
@@ -305,13 +340,22 @@ DELIMITER ;
 ALTER TABLE `asistencia`
   ADD PRIMARY KEY (`idasistencia`),
   ADD KEY `FKAsistencia497237` (`documento`),
-  ADD KEY `FKasistencia701223` (`IdMat`);
+  ADD KEY `FKasistencia701223` (`IdMat`),
+  ADD KEY `idlistado` (`idlistado`);
 
 --
 -- Indices de la tabla `curso`
 --
 ALTER TABLE `curso`
   ADD PRIMARY KEY (`grado`);
+
+--
+-- Indices de la tabla `curso_materia`
+--
+ALTER TABLE `curso_materia`
+  ADD PRIMARY KEY (`id_relacion`),
+  ADD KEY `id_curso` (`grado`),
+  ADD KEY `id_materia` (`idmat`);
 
 --
 -- Indices de la tabla `directorio`
@@ -329,6 +373,12 @@ ALTER TABLE `horario`
   ADD KEY `FKHorario52500` (`grado`);
 
 --
+-- Indices de la tabla `listado`
+--
+ALTER TABLE `listado`
+  ADD PRIMARY KEY (`idlistado`);
+
+--
 -- Indices de la tabla `materia`
 --
 ALTER TABLE `materia`
@@ -342,9 +392,9 @@ ALTER TABLE `observador`
   ADD KEY `FKObservador378615` (`documento`);
 
 --
--- Indices de la tabla `rofesor_materia`
+-- Indices de la tabla `profesor_materia`
 --
-ALTER TABLE `rofesor_materia`
+ALTER TABLE `profesor_materia`
   ADD PRIMARY KEY (`id_relacion`),
   ADD KEY `documento` (`documento`),
   ADD KEY `idMat` (`idMat`);
@@ -371,13 +421,19 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
-  MODIFY `idasistencia` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación de las asistencias de un curso', AUTO_INCREMENT=17;
+  MODIFY `idasistencia` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación de las asistencias de un curso', AUTO_INCREMENT=224;
 
 --
 -- AUTO_INCREMENT de la tabla `curso`
 --
 ALTER TABLE `curso`
   MODIFY `grado` int(11) NOT NULL AUTO_INCREMENT COMMENT 'nombre o número del curso al que será agregado cada estudiante', AUTO_INCREMENT=1104;
+
+--
+-- AUTO_INCREMENT de la tabla `curso_materia`
+--
+ALTER TABLE `curso_materia`
+  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `directorio`
@@ -392,22 +448,28 @@ ALTER TABLE `horario`
   MODIFY `Idhorario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación del horario de un curso', AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `listado`
+--
+ALTER TABLE `listado`
+  MODIFY `idlistado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `materia`
 --
 ALTER TABLE `materia`
-  MODIFY `idmat` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación de la materia', AUTO_INCREMENT=11;
+  MODIFY `idmat` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificación de la materia', AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `observador`
 --
 ALTER TABLE `observador`
-  MODIFY `idobservador` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Código asignado a cada observador', AUTO_INCREMENT=112;
+  MODIFY `idobservador` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Código asignado a cada observador', AUTO_INCREMENT=100000001;
 
 --
--- AUTO_INCREMENT de la tabla `rofesor_materia`
+-- AUTO_INCREMENT de la tabla `profesor_materia`
 --
-ALTER TABLE `rofesor_materia`
-  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `profesor_materia`
+  MODIFY `id_relacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -423,14 +485,22 @@ ALTER TABLE `rol`
 -- Filtros para la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
-  ADD CONSTRAINT `FKAsistencia497237` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`),
-  ADD CONSTRAINT `FKasistencia701223` FOREIGN KEY (`IdMat`) REFERENCES `materia` (`idmat`);
+  ADD CONSTRAINT `FKAsistencia497237` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FKasistencia701223` FOREIGN KEY (`IdMat`) REFERENCES `materia` (`idmat`),
+  ADD CONSTRAINT `asistencia_ibfk_1` FOREIGN KEY (`idlistado`) REFERENCES `listado` (`idlistado`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `curso_materia`
+--
+ALTER TABLE `curso_materia`
+  ADD CONSTRAINT `curso_materia_ibfk_1` FOREIGN KEY (`grado`) REFERENCES `curso` (`grado`),
+  ADD CONSTRAINT `curso_materia_ibfk_2` FOREIGN KEY (`idmat`) REFERENCES `materia` (`idmat`);
 
 --
 -- Filtros para la tabla `directorio`
 --
 ALTER TABLE `directorio`
-  ADD CONSTRAINT `FKdocumento` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`);
+  ADD CONSTRAINT `FKdocumento` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `horario`
@@ -443,14 +513,14 @@ ALTER TABLE `horario`
 -- Filtros para la tabla `observador`
 --
 ALTER TABLE `observador`
-  ADD CONSTRAINT `FKObservador378615` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`);
+  ADD CONSTRAINT `FKObservador378615` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`) ON DELETE CASCADE;
 
 --
--- Filtros para la tabla `rofesor_materia`
+-- Filtros para la tabla `profesor_materia`
 --
-ALTER TABLE `rofesor_materia`
-  ADD CONSTRAINT `rofesor_materia_ibfk_1` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`),
-  ADD CONSTRAINT `rofesor_materia_ibfk_2` FOREIGN KEY (`idMat`) REFERENCES `materia` (`idmat`);
+ALTER TABLE `profesor_materia`
+  ADD CONSTRAINT `profesor_materia_ibfk_1` FOREIGN KEY (`documento`) REFERENCES `usuario` (`documento`),
+  ADD CONSTRAINT `profesor_materia_ibfk_2` FOREIGN KEY (`idMat`) REFERENCES `materia` (`idmat`);
 
 --
 -- Filtros para la tabla `usuario`
