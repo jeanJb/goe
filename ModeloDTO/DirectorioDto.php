@@ -9,6 +9,7 @@ class DirectorioDto{
     private $nom_acu = "";
     private $telefono_acu = "";
     private $doc_acu = "";
+    private $email_acu = "";
 // GET
 function getIDDetalle(){
     return $this->id_detalle;
@@ -36,6 +37,9 @@ function getTelefono_acu(){
 }
 function getDoc_acu(){
     return $this->doc_acu;
+}
+function getEmail_acu(){
+    return $this->email_acu;
 }
 
 //set
@@ -65,6 +69,9 @@ function setTelefono_acu($telefono_acu){
 }
 function setDoc_acu($doc_acu){
     $this->doc_acu=$doc_acu;
+}
+function setEmail_acu($email_acu){
+    $this->email_acu=$email_acu;
 }
 
 }
