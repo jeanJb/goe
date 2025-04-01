@@ -13,6 +13,11 @@ class UsuarioDto{
     private $direccion = "";
     private $foto = "";
     private $grado = "";
+    private $reset_token = "";
+    private $token_expiration = "";
+    private $token_sesion = "";
+    private $activo; // Activo o Inactivo
+    private $token_activacion; // Token único para activación
 // GET
 function getDocumento(){
     return $this->documento;
@@ -52,6 +57,21 @@ function getFoto(){
 }
 function getGrado(){
     return $this->grado ?: null;
+}
+function getResetT(){
+    return $this->reset_token ?: null;
+}
+function getTokenExpi(){
+    return $this->token_expiration ?: null;
+}
+function getTokenSesion(){
+    return $this->token_sesion ?: null;
+}
+public function getActivo() { 
+    return $this->activo; 
+}
+public function getTokenActivacion() { 
+    return $this->token_activacion; 
 }
 
 //set
@@ -93,6 +113,21 @@ function setFoto($foto){
 }
 function setGrado($grado){
     $this->grado=$grado;
+}
+function setResetT($reset_token){
+    $this->reset_token=$reset_token;
+}
+function setTokenExpi($token_expiration){
+    $this->token_expiration=$token_expiration;
+}
+function setTokenSesion($token_sesion){
+    $this->token_sesion=$token_sesion;
+}
+public function setActivo($activo) { 
+    $this->activo = $activo; 
+}
+public function setTokenActivacion($token_activacion) { 
+    $this->token_activacion = $token_activacion; 
 }
 }
 ?>
