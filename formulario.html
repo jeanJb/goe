@@ -1,106 +1,74 @@
-
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="STYLES/Bootstrap/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="acudiente.css">
-
-    <link rel="icon" href="IMG/logos/goe03.png" type="image/png">
-    <title>GOE</title>
-
+  <meta charset="UTF-8">
+  <title>Formulario de Búsqueda</title>
+  <link rel="stylesheet" href="STYLES/Bootstrap/bootstrap.min.css">
+  <style>
+    .center-form {
+      margin-top: 150px;
+      max-width: 500px;
+    }
+  </style>
 </head>
-<body> 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <space class="text-primary">GO</space>E
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+<body>
+  <div class="container center-form">
+    <h2 class="mb-4 text-center">Consulta de Estudiante</h2>
+    <form id="consulta-form">
+      <div class="mb-3">
+        <label for="parent_cedula" class="form-label">Cédula del Padre:</label>
+        <input type="text" id="parent_cedula" name="parent_cedula" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="student_ti" class="form-label">Tarjeta de Identidad del Estudiante:</label>
+        <input type="text" id="student_ti" name="student_ti" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="campo" class="form-label">Campo a actualizar:</label>
+        <select id="campo" name="campo" class="form-select" required>
+          <option value="email">Email</option>
+          <option value="nombre1">Primer Nombre</option>
+          <option value="nombre2">Segundo Nombre</option>
+          <option value="apellido1">Primer Apellido</option>
+          <option value="apellido2">Segundo Apellido</option>
+          <option value="grado">Grado</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="valor" class="form-label">Nuevo valor:</label>
+        <input type="text" id="valor" name="valor" class="form-control" required>
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Actualizar Información</button>
+      </div>
+    </form>
+    <div id="respuesta" class="mt-3 text-center"></div>
+  </div>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">HOME</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">ACERCA DE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">SERVICIOS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">PORTAFOLIO</a>
-                    </li>
+  <script src="STYLES/Bootstrap/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('consulta-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">GRUPO</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">CONTACTANOS</a>
-                    </li>
+      const documento = document.getElementById('student_ti').value;
+      const campo = document.getElementById('campo').value;
+      const valor = document.getElementById('valor').value;
 
-                    <li class="nav-item">
-                        <a class="nav-link  text-primary" href="acudientes.html">LOGIN ACUDIENTES</a>
-                    </li>
+      try {
+        const response = await fetch('api.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ documento, campo, valor })
+        });
 
-                </ul>
-
-            </div>
-
-            
-        </div>
-    </nav>
-
-
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-
-    
-            <div class="row border rounded-5 p-3 bg-white shadow box-area">
-
-    
-            <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background: #47495085;">
-                <div class="featured-image mb-3">
-                <img src="img/libro.png" class="img-fluid" style="width: 250px;">
-                </div>
-                <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">Ser verificado</p>
-                <small class="text-white text-wrap text-center" style="width: 17rem;font-family: 'Courier New', Courier, monospace;">Lorem ipsum dolor sit amet consectetur</small>
-            </div> 
-    
-
-            
-            <div class="col-md-6 right-box">
-                <div class="row align-items-center">
-                    <div class="header-text mb-4">
-                        <h2>BIENVENIDOS</h2>
-                        <p>Estamos felices de tenerte de vuelta.</p>
-                    </div>
-                    <form action="api.php" method="POST">
-                      <label for="parent_cedula">Cédula del Padre:</label>
-                      <input type="text" id="parent_cedula" name="parent_cedula" required>
-                      
-                      <label for="student_ti">Tarjeta de Identidad del Estudiante:</label>
-                      <input type="text" id="student_ti" name="student_ti" required>
-                      
-                      <button type="submit">Generar Reporte</button>
-                    </form>
-                    
-                 
-            </div> 
-    
-            </div>
-        </div>
-
-
+        const result = await response.json();
+        document.getElementById('respuesta').innerText = result.success || result.error || 'Respuesta inesperada';
+        document.getElementById('respuesta').classList.add(result.success ? 'text-success' : 'text-danger');
+      } catch (error) {
+        document.getElementById('respuesta').innerText = 'Error al conectar con el servidor.';
+        document.getElementById('respuesta').classList.add('text-danger');
+      }
+    });
+  </script>
 </body>
 </html>
