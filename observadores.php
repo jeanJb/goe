@@ -1,76 +1,204 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['documento'])) {
+if (!isset($_SESSION['documento']) || !isset($_SESSION['token_sesion']) || $_SESSION['id_rol'] != 104) {
     header("Location:./index.html");
 }
+
+// Obtener el token de la base de datos
+require 'Utilidades/conexion.php';
+$cnn = Conexion::getConexion();
+$stmt = $cnn->prepare("SELECT token_sesion FROM usuario WHERE documento = :documento");
+$stmt->bindParam(':documento', $_SESSION['documento'], PDO::PARAM_INT);
+$stmt->execute();
+$valor = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Si el token en la BD no coincide con el de la sesión, cerrar sesión
+if (!$valor || $valor['token_sesion'] !== $_SESSION['token_sesion']) {
+    session_unset();
+    session_destroy();
+    header("Location: go.php?error=Tu sesión ha expirado. Inicia sesión nuevamente.");
+    exit();
+}
+
 require 'ModeloDAO/UsuarioDao.php';
 require 'ModeloDTO/UsuarioDto.php';
-require 'Utilidades/conexion.php';
 
 $uDao = new UsuarioDao();
 
-$allObs = $uDao->ListarObservadores();
+$trimestre = $_POST['trim'] ?? null;
+$allObs = $uDao->ListarObservadores($trimestre);
 $cursos = $uDao->ListarCursos();
 $u = $uDao->user($_SESSION['documento']);
 
-$documento = $_GET['user'] ?? null;
+$documento = $_GET['user'] ?? '';
 $obs = $uDao->listarUsuariosper($documento);
+$grado = $_GET['grado'] ?? '703';
+$estudiantes = $uDao->listarEstudiantesPorCurso($grado);
 
-$estudiantes = isset($estudiantes) ? $estudiantes : [];
 
-if (isset($_GET['grado']) && is_numeric($_GET['grado'])) {
-    $grado = $_GET['grado'];
-    $estudiantes = $uDao->listarEstudiantesPorCurso($grado);
-    echo json_encode($estudiantes);
-}
+$allObs = array_map(function($obsv) {
+    return array_map(function($value) {
+        if (is_null($value)) {
+            return ''; // Convertir NULL a cadena vacía
+        }
+        if (is_string($value)) {
+            return utf8_encode($value); // Asegurar codificación UTF-8
+        }
+        return $value; // Dejar otros tipos como están
+    }, $obsv);
+}, $allObs);
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="STYLES/diseño.css">
-    <link rel="stylesheet" href="STYLES/observadores.css">
-    <title>GOE
-    </title>
+    <link rel="icon" href="IMG/logos/goe03.png" type="image/png">
+    <title>GOE</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="JS/search.js"></script>
+    <link rel="stylesheet" href="STYLES/diseno.css">
+    <script>
+        if (localStorage.getItem('dark-mode') === 'enabled') {
+            document.documentElement.classList.add('dark');
+        }
+
+        function confirmar(event) {
+            if (!confirm("¿Estás seguro de que deseas eliminar este registro?")) {
+                event.preventDefault();
+            }
+        }
+
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
 </head>
 <body>
-<div class="menu colordis">
-        <div class="title">
-            <h1>GOE</h1>
-            <img src="IMG/GOE.jpg" alt="">
+
+    <nav class="sidebar close">
+        <img src="IMG/logos/goe03.png" alt="" class="imag">
+        <header>
+            <div class="text logo">
+                <span class="name">GOE</span>
+                <span class="eslogan"></span>
+            </div>
+            <i class="bx bx-menu toggle"></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-liks">
+                    <li class="nav-link house">
+                        <a href="home.php">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link enfoque">
+                        <a href="observadores.php">
+                            <i class="bx bx-book icon"></i>
+                            <span class="text nav-text">Observadores de Estudiantes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="asistencias.php">
+                            <i class="bx bx-calendar-week icon"></i>
+                            <span class="text nav-text">Asistencia de Estudiantes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="curso_estu.php">
+                            <i class="bx bx-objects-horizontal-right icon"></i>
+                            <span class="text nav-text">Asignar Curso a Estudiantes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="curso_doc.php">
+                            <i class="bx bx-objects-horizontal-left icon"></i>
+                            <span class="text nav-text">Asignar Cursos y Materias</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="pro_mat.php">
+                            <i class="bx bx-book-content icon"></i>
+                            <span class="text nav-text">Materias de los Docentes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="usuarios.php">
+                            <i class="bx bx-user icon"></i>
+                            <span class="text nav-text">Gestión de Usuarios</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="intro.php">
+                            <i class="bx bx-user-plus icon"></i>
+                            <span class="text nav-text">Registrar Usuarios</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="email.php">
+                                <i class='bx bx-envelope icon'></i>
+                                <span class="text nav-text">Enviar correos</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                <li class="">
+                    <a href="perfil.php">
+                        <i class="bx bx-user-circle icon"></i>
+                        <span class="text nav-text">Perfil</span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="exit.php">
+                        <i class="bx bx-log-out icon"></i>
+                        <span class="text nav-text">Cerrar Sesión</span>
+                    </a>
+                </li>
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class="bx bx-moon icon moon"></i>
+                        <i class="bx bx-sun icon sun"></i>
+                    </div>
+                    <span class="mode-text text">Ligth Mode</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+                
+            </div>
+
         </div>
 
-        <ul>
-            <li><a href="home.php"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
-            <li><a href="observadores.php"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
-            <li><a href="asistencia.php"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
-            <li><a href="intro.php"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
-
-        </ul>
-    </div> 
-
-    <!-- nav -->
-
-    <nav class="nav colordis">
-    <h1 style="float: left; margin: 12px 0 10px 10px;"><?php echo $u['nombre1']; ?> <?php echo $u['apellido1']; ?></h1>
-        <ul>
-            <li><a href="alert.html"><img src="IMG/message-circle.svg" alt=""><!-- <p>Notificaciones</p> --></a></li>
-            <li><a href="perfil.php"><img src="IMG/user.svg" alt="" style="border: 1px #50c6e3 solid;"><!-- <p>Perfil</p> --></a></li>
-            <li><a href="exit.php"><img src="IMG/exit.svg" alt=""><!-- <p>Cerrar Sesion</p> --></a></li>
-        </ul>
     </nav>
 
-    <!--Contenido de la pagina-->
-    <div class="contenido">
+    <div class="home">
+        <div class="text">Observadores</div>
+
+        <!-- Contenido -->
+
         <div class="datos colordiv">
             <h2>Datos del Estudiante</h2>
             <form method="GET" action="observadores.php">
-                <div class="uno">
+                <div class="filtros">
                     <h3>Curso:</h3>
-                    <select name="grado" id="curso" onchange="cargarEstudiantes()" class="select">
+                    <select name="grado" id="curso" class="select">
                         <option value="">seleccione</option>
                         <?php foreach($cursos as $index => $curso){ ?>
                             <option value="<?php echo $curso['grado']; ?>"><?php echo $curso['grado']; ?></option>;
@@ -93,12 +221,13 @@ if (isset($_GET['grado']) && is_numeric($_GET['grado'])) {
             <?php foreach($obs as $ob){ ?>
             <div class="c">
                 <h3>Documento:  <p> <?php echo $ob['documento']; ?></p></h3>
-                <h3>Correo: <p><?php echo $ob['email']; ?></p></h3>
+                <h3>Documento:  <p> <?php echo $ob['nombre1']; ?> <?php echo $ob['nombre2']; ?> <?php echo $ob['apellido1']; ?> <?php echo $ob['apellido2']; ?></p></h3>
+                <h3>Correo: <p> <?php echo $ob['email']; ?></p></h3>
             </div>
 
             <div class="c">
-                <h3>Telefono: <p><?php echo $ob['telefono']; ?></p></h3>
-                <h3>Direccion: <p><?php echo $ob['direccion']; ?></p></h3>
+                <h3>Telefono: <p> <?php echo $ob['telefono']; ?></p></h3>
+                <h3>Direccion: <p> <?php echo $ob['direccion']; ?></p></h3>
             </div>
             <?php } ?>
         </div>
@@ -153,38 +282,37 @@ if (isset($_GET['grado']) && is_numeric($_GET['grado'])) {
         <div class="datos1 colordiv">
 
             <form action="controladores/controlador.observador.php" method="POST">
-            <div class="" style="display: flex; flex-direction: row; align-items: end;">
+                <div class="" style="display: flex; flex-direction: row; align-items: end;">
                     <h3 style="margin-right: 8px;">Documento:</h3>
-                    <input type="number" name="documento" value="<?php echo $ob['documento']; ?>" required>
+                    <input type="number" name="documento" <?php foreach($obs as $ob){ ?>value="<?php echo $ob['documento']; ?>" <?php }?> required>
                 </div>
-                <br> 
             
                 <div class="" style="display: flex; flex-direction: row; align-items: end;">
                     <h3 style="margin-right: 8px;">FECHA:  </h3>
-                    <input type="datetime-local" name="fecha" id="">
+                    <input type="datetime-local" name="fecha" id="" required>
                 </div>
-    
-                <br>
     
                 <div class="" style="width: 50%; height: auto; float: left;">
                     <h1>Porque se hace la Observacion?</h1>
-                    <textarea name="descripcion_falta" id=""></textarea>
+                    <textarea name="descripcion_falta" id="" required></textarea>
                 </div>
-                <br>
 
                 <div class="" style="width: 50%; height: auto; float: left;">
                     <h1>Compromiso del Estudiante</h1>
-                    <textarea name="compromiso" id=""></textarea>
+                    <textarea name="compromiso" id="" required></textarea>
                 </div>
-                <br>
 
-                <div class="" style="">
+                <div class="">
                     <h3 style="margin-right: 8px;">Docente:</h3>
-                    <br>
-                    <input type="text" name="seguimiento" value="<?php echo $u['nombre1']; ?> <?php echo $u['apellido1']; ?>" required>
+                    <input type="text" name="seguimiento" value="<?php echo $u['nombre1']; ?> <?php echo $u['apellido1']; ?>" required readonly>
+                    <h3>Trimestre</h3>
+                        <select name="trimestre" id="" class="select" required>
+                            <option value="">Selecciona un trimestre</option>
+                            <option value="I">I</option>
+                            <option value="II">II</option> 
+                            <option value="III">III</option>
+                        </select>
                 </div>
-                <br>
-
     
                 <h3>Nivel de la Falta:</h3>
                 <select name="falta" id="" class="select">
@@ -192,7 +320,6 @@ if (isset($_GET['grado']) && is_numeric($_GET['grado'])) {
                     <option value="Regular">Regular</option>
                     <option value="Grave">Grave</option>
                 </select>
-    
     
                 <br>
                 <button type="submit" class="button" name="registro" id="registro">Enviar</button>
@@ -203,72 +330,84 @@ if (isset($_GET['grado']) && is_numeric($_GET['grado'])) {
         <!-- Consulta de Observadores -->
         <div class="datos1 colordiv">
             <h2>Observaciones</h2>
+            <input type="text" id="buscador" placeholder="Buscar observacion..." onkeyup="buscarEnTablas()">
+            <br>
             <br>
             <table id="user-table">
                 <thead>
                     <tr>
                         <td>Estudiante</td>
+                        <td>Fecha</td>
                         <td>Descripcion</td>
+                        <td>Trimestre</td>
                         <td>Nivel de la Falta</td>
                         <td>Opciones</td>
-                        <td>Eliminar</td>
                     </tr>
                 </thead>
 
                 <tbody>
                     <?php
-                    foreach ($allObs as $index => $obs) { ?>
+                    foreach ($allObs as $index => $obsv) { ?>
                         <tr>
-                            <td><?php echo $obs['nombre1']; ?> <?php echo $obs['apellido1']; ?> <?php echo $obs['apellido2']; ?></td>
-                            <td><?php echo $obs['descripcion_falta']; ?></td>
-                            <td><?php echo $obs['falta']; ?></td>
-                            <td><a href="#openModal" class="button" id="<?php echo $index; ?>" onclick="verObservation(<?php echo $index; ?>)">VER</a></td>
-                            <td><a href="controladores/controlador.observador.php?id=<?php echo $obs['idobservador'];?>" ><!-- onclick=" return confirmar(event);" -->
-                            <img src=" IMG/trash.svg" height="48" width="48" class=" img-thumbnail" alt=""></a></td>
+                            <td><?php echo $obsv['nombre1']; ?> <?php echo $obsv['nombre2']; ?> <?php echo $obsv['apellido1']; ?> <?php echo $obsv['apellido2']; ?></td>
+                            <td><?php echo $obsv['fecha']; ?></td>
+                            <td><?php echo $obsv['descripcion_falta']; ?></td>
+                            <td><?php echo $obsv['trimestre']; ?></td>
+                            <td><?php echo $obsv['falta']; ?></td>
+                            <td>
+                                <a href="#openModal" class="button_2" id="<?php echo $index; ?>" onclick="verObservation(<?php echo $index; ?>)"><i class='bx bx-edit op'></i></a>
+                                <a href="controladores/controlador.observador.php?id=<?php echo $obsv['idobservador'];?>" class="button_2" onclick=" return confirmar(event);">
+                                    <i class='bx bx-trash op'></i>
+                                </a>
+                            </td>
                         </tr>
                     <?php } ?>
                 </tbody>
             </table>
         </div>
-
     </div>
 </body>
 </html>
 
 <!-- modal para ver la observacion un estudiante-->
 <div id="openModal" class="modal_asis">
-    <div class="colordiv">
-        <a href="#close" id="close" class="close">X</a>
+    <div class="modaldiv">
+        <a href="#close" id="exit" class="exit">X</a>
         <h1 style="text-align: center;">Actualizar Observación</h1>
         <form action="controladores/controlador.observador.php" method="POST">
             
             <input type="hidden" name="idobservador" id="id" value="...">
 
 
-            <div class="" style="display: flex; flex-direction: row; align-items: end;">
-                <h3 style="margin-right: 8px;">Docente: </h3>
+            <div class="row">
+                <h3>Docente: </h3>
                 <input type="text" id="docente" name="seguimiento" value="" required>
             </div>
-
-            <div class="" style="display: flex; flex-direction: row; align-items: end;">
-                <h3 style="margin-right: 8px;">Documento:</h3>
+            <br>
+            <div class="row">
+                <h3>Nombre:</h3>
+                <span id="nombre" name=""></span>
+            </div>
+            <br>
+            <div class="row">
+                <h3>Documento:</h3>
                 <input type="text" id="documento" name="" value="" readonly>
             </div>
 
             <br>    
 
-            <div class="" style="display: flex; flex-direction: row; align-items: end;">
-                <h3 style="margin-right: 8px;">Fecha:</h3>
+            <div class="row">
+                <h3>Fecha:</h3>
                 <input type="input" id="fecha" name="fecha" value="" readonly>
             </div>
 
             <br>
 
-            <div class="" style="width: 50%; height: auto; float: left;">
+            <div class="textone" >
                 <h1>Porque se hace la Observación?</h1>
                 <textarea id="descripcion_falta" name="descripcion_falta" required></textarea>
             </div>
-            <div class="" style="width: 50%; height: auto; float: left; border-left: black solid 1px; padding: 7px;">
+            <div class="texttwo" >
                 <h1>Compromiso del Estudiante</h1>
                 <textarea id="compromiso" name="compromiso" required></textarea>
             </div>
@@ -280,6 +419,11 @@ if (isset($_GET['grado']) && is_numeric($_GET['grado'])) {
                 <option value="Regular">Regular</option>
                 <option value="Grave">Grave</option>
             </select>
+
+            <div class="filtros">
+                <h3>Trimestre: </h3>
+                <h4 id="trimestres"></h4>
+            </div>
             <br><br>
             <button type="submit" class="button" name="actualizar">Actualizar</button>
         </form>
@@ -297,78 +441,23 @@ if (isset($_GET['grado']) && is_numeric($_GET['grado'])) {
         <div class="col-md-5"></div>
     </div>
 
-    <?php
-    }
-    ?>
+<?php } ?>
 
 <script>
     function verObservation(index) {
         const allObs = <?php echo json_encode($allObs); ?>;
 
-        const obs = allObs[index];
+        const obsv = allObs[index];
 
-        document.getElementById("id").value = obs.idobservador;
-        document.getElementById("docente").value = obs.seguimiento;
-        document.getElementById("documento").value = obs.documento;
-        document.getElementById("fecha").value = obs.fecha;
-        document.getElementById("descripcion_falta").value = obs.descripcion_falta;
-        document.getElementById("compromiso").value = obs.compromiso;
-        document.getElementById("falta").value = obs.falta;
+        document.getElementById("id").value = obsv.idobservador;
+        document.getElementById("docente").value = obsv.seguimiento;
+        document.getElementById("nombre").innerText = obsv.nombre1 + " " + obsv.nombre2 + " " + obsv.apellido1 + " " + obsv.apellido2;
+        document.getElementById("documento").value = obsv.documento;
+        document.getElementById("fecha").value = obsv.fecha;
+        document.getElementById("descripcion_falta").value = obsv.descripcion_falta;
+        document.getElementById("compromiso").value = obsv.compromiso;
+        document.getElementById("falta").value = obsv.falta;
+        document.getElementById("trimestres").innerText = obs.trimestre;
     }
 
 </script>
-
-<script>
-
-    function cargarEstudiantes() {
-        const curso = document.getElementById('curso').value;
-
-        if (curso) {
-            fetch(`obtener_estudiantes.php?grado=${curso}`)
-                .then(response => response.json())
-                .then(data => {
-                    const estudiantes = document.getElementById('estudiantes');
-                    estudiantes.innerHTML = '<option value="">Seleccione</option>';
-
-                    if (data.length > 0) {
-                        data.forEach(estudiante => {
-                            const option = document.createElement('option');
-                            option.value = estudiante.documento;
-                            option.textContent = `${estudiante.nombre1} ${estudiante.apellido1}`;
-                            estudiantes.appendChild(option);
-                        });
-                    } else {
-                        estudiantes.innerHTML = '<option value="">No hay estudiantes</option>';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    }
-
-    function confirmar(event) {
-        event.preventDefault();  // Para evitar que el formulario se envíe directamente al action
-        const link = event.currentTarget.href;
-        Swal.fire({
-        icon: 'warning',
-        title: '¿Estas seguro de eliminar el registro?',
-        text: 'Esa acción no se puede deshacer',
-        background: '#f7f7f7',
-        showCancelButton: true,
-        confirmButtonColor: '#28a745',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Sí,eliminar',
-        cancelButtonText: 'Cancelar',
-        customClass: {
-            confirmButton:'btn btn-success',
-            cancelButton: 'btn btn-secondary',
-        }
-    }).then((result)=>{
-        if(result.isConfirmed) {
-            window.location.href = link;
-        }
-    });  
-        
-    }
-</script>
-
-<!--https://layers.to/layers/clv0q7xjj005dky0hzjj7rhtb-->

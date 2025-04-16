@@ -1,116 +1,200 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['documento'])) {
+if (!isset($_SESSION['documento']) || !isset($_SESSION['token_sesion']) || $_SESSION['id_rol'] != 104) {
     header("Location:./index.html");
 }
 require 'ModeloDAO/UsuarioDao.php';
 require 'ModeloDTO/UsuarioDto.php';
 require 'Utilidades/conexion.php';
 
+// Obtener el token de la base de datos
+$cnn = Conexion::getConexion();
+$stmt = $cnn->prepare("SELECT token_sesion FROM usuario WHERE documento = :documento");
+$stmt->bindParam(':documento', $_SESSION['documento'], PDO::PARAM_INT);
+$stmt->execute();
+$valor = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Si el token en la BD no coincide con el de la sesión, cerrar sesión
+if (!$valor || $valor['token_sesion'] !== $_SESSION['token_sesion']) {
+    session_unset();
+    session_destroy();
+    header("Location: go.php?error=Tu sesión ha expirado. Inicia sesión nuevamente.");
+    exit();
+}
+
 $uDao = new UsuarioDao();
 
 $u = $uDao->user($_SESSION['documento']);
-
-
-
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="STYLES/diseño.css">
-    <link rel="stylesheet" href="STYLES/home.css">
-    <title>GOE
-    </title>
+    <link rel="icon" href="IMG/logos/goe03.png" type="image/png">
+    <title>GOE</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="STYLES/diseno.css">
+    <script>
+        if (localStorage.getItem('dark-mode') === 'enabled') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </head>
 <body>
-    <div class="main-header">
-        <!-- <label for="btn-nav" class="btn-nav"><i class="fas fa-bars">x</i></label>
-        <input type="checkbox" id="btn-nav"> -->
-        <div class="menu colordis n">
-            <div class="title">
-                <h1>GOE</h1>
-                <img src="IMG/GOE.jpg" alt="">
+
+    <nav class="sidebar close">
+        <img src="IMG/logos/goe03.png" alt="" class="imag">
+        <header>
+            <div class="text logo">
+                <span class="name">GOE</span>
+            </div>
+            <i class="bx bx-menu toggle"></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-liks">
+                    <li class="nav-link house enfoque">
+                        <a href="home.php">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Inicio</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="observadores.php">
+                            <i class="bx bx-book icon"></i>
+                            <span class="text nav-text">Observadores de Estudiantes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="asistencias.php">
+                            <i class="bx bx-calendar-week icon"></i>
+                            <span class="text nav-text">Asistencia de Estudiantes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="curso_estu.php">
+                            <i class="bx bx-objects-horizontal-right icon"></i>
+                            <span class="text nav-text">Asignar Curso a Estudiantes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="curso_doc.php">
+                            <i class="bx bx-objects-horizontal-left icon"></i>
+                            <span class="text nav-text">Asignar Cursos y Materias</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="pro_mat.php">
+                            <i class="bx bx-book-content icon"></i>
+                            <span class="text nav-text">Materias de los Docentes</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="usuarios.php">
+                            <i class="bx bx-user icon"></i>
+                            <span class="text nav-text">Gestión de Usuarios</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-link">
+                        <a href="intro.php">
+                            <i class="bx bx-user-plus icon"></i>
+                            <span class="text nav-text">Registrar Usuarios</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="email.php">
+                                <i class='bx bx-envelope icon'></i>
+                                <span class="text nav-text">Enviar correos</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <ul class="navegation">
-                <li><a href="home.php"><img src="IMG/home.svg" alt=""><p>Home</p></a></li>
-                <li><a href="observadores.php"><img src="IMG/info.svg" alt=""><p>Observador</p></a></li>
-                <li><a href="asistencia.php"><img src="IMG/inbox.svg" alt=""><p>Asistencia</p></a></li>
-                <li><a href="intro.php"><img src="IMG/user.svg" alt=""><p>Login</p></a></li>
-            </ul>
-        </div> 
-    </div>
-    <!-- nav -->
+            <div class="bottom-content">
+                <li class="">
+                    <a href="perfil.php">
+                        <i class="bx bx-user-circle icon"></i>
+                        <span class="text nav-text">Perfil</span>
+                    </a>
+                </li>
 
-    <nav class="nav colordis">
-        <h1 style="float: left; margin: 12px 0 10px 10px;">
-            <?php echo isset($u['nombre1']) ? $u['nombre1'] : 'Usuario'; ?>
-            <?php echo isset($u['apellido1']) ? $u['apellido1'] : ''; ?>
-        </h1>
-        <ul>
-            <li><a href="alert.html"><img src="IMG/message-circle.svg" alt=""><!-- <p>Notificaciones</p> --></a></li>
-            <li><a href="perfil.php"><img src="IMG/user.svg" alt="" style="border: 1px #50c6e3 solid;"><!-- <p>Perfil</p> --></a></li>
-            <li><a href="exit.php"><img src="IMG/exit.svg" alt=""><!-- <p>Cerrar Sesion</p> --></a></li>
-        </ul>
+                <li class="">
+                    <a href="exit.php">
+                        <i class="bx bx-log-out icon"></i>
+                        <span class="text nav-text">Cerrar Sesión</span>
+                    </a>
+                </li>
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class="bx bx-moon icon moon"></i>
+                        <i class="bx bx-sun icon sun"></i>
+                    </div>
+                    <span class="mode-text text">Ligth Mode</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+                
+            </div>
+
+        </div>
+
     </nav>
 
-    <!--Contenido de la pagina-->
-    <div class="contenido">
-        <div class="cuadros">
-            <div class="uno colordiv"></div>
-            <div class="dos colordiv">
-                <img src="./IMG/user.svg" alt="">
-                <h3 style="text-align: center;">
-                    <?php echo isset($u['nombre1']) ? $u['nombre1'] : 'Usuario'; ?>
-                    <?php echo isset($u['apellido1']) ? $u['apellido1'] : ''; ?>
-                </h3>
-            </div>
-            <div class="colordiv slider">
-                <!-- <div class="slider-frame">
-                    <ul>
-                        <li><img src="../IMG/White-Lamborghini-Huracan.jpg" alt=""></li>
-                        <li><img src="../IMG/portada.jpg" alt=""></li>
-                        <li><img src="../IMG/White-Lamborghini-Huracan.jpg" alt=""></li>
-                        <li><img src="../IMG/portada.jpg" alt=""></li>
-                    </ul>
-                </div> -->
+    <div class="home">
+        <div class="text">
+            ¡Hola, Bienvenid@, <?php echo $u['nombre1'].' '. $u['nombre2'].' '.$u['apellido1'].' '.$u['apellido2']?>!
+            <br>
+        </div>
 
-                <figure>
-                    <div class="slide">
-                        <h1></h1>
-                        <img src="./IMG/jfr1.jpg" alt="">
-                    </div>
-
-                    <div class="slide">
-                        <h1></h1>
-                        <img src="./IMG/jfr2.jpg" alt="">
-                    </div>
-
-                    <div class="slide">
-                        <h1></h1>
-                        <img src="./IMG/jfr3.jpg" alt="">
-                    </div>
-
-                    <div class="slide">
-                        <h1></h1>
-                        <img src="./IMG/jfr4.jpg" alt="">
-                    </div>
-                </figure>
-            </div>
+        <div class="filtros">
+            <h1 class="frase">Un espacio digital diseñado para estudiantes, docentes y directivos.</h1>
+        
+            <img src="IMG/logos/Wallpaper_GOE.JPG" alt="" class="wallpaper">
         </div>
         
-        <!-- <div class="cell colordiv">
-            <div></div>
-            <iframe src="https://www.google.com/maps/embed?pb=!3m2!1ses!2sco!4v1727382609250!5m2!1ses!2sco!6m8!1m7!1sy5ycthCLRx4R76m1rGpaiw!2m2!1d4.574753243950389!2d-74.08742229769808!3f36.597942!4f0!5f0.7820865974627469" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" frameborder="0"></iframe>
-        </div> -->
-        <iframe class="cell"  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3977.106624637012!2d-74.08991592065429!3d4.574864000000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f98f0356fc28f%3A0xcfcd594237664a0c!2sColegio%20Jos%C3%A9%20F%C3%A9lix%20Restrepo%20Sede%20D!5e0!3m2!1ses!2sco!4v1727383592848!5m2!1ses!2sco" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" frameborder="0">
-            <div></div>
-        </iframe>
+        <div class="filtros complement">
+            <div class="card">
+                <span class="small-text">Descarga la App ahora!</span>
+                <span class="titulo">GOE</span>
+                <span class="desc">📲 ¡Lleva tu gestión escolar a otro nivel! Descarga nuestra app móvil y accede a asistencias, directorios y observadores desde cualquier lugar. 📥✨</span>
+                <div class="botons">
+                    <a href="#" class="boton">
+                    <span class="icons"><i class='bx bxl-play-store icon app'></i></span>
+                    <div class="boton-text google">
+                        <span>Obtener en la</span>
+                        <span>Google Play</span>
+                    </div>
+                    </a>
+                    <a href="#" class="boton">
+                    <span class="icons"><i class='bx bxl-apple icon app'></i></span>
+                    <div class="boton-text apple icon">
+                        <span>Descargar en la</span>
+                        <span>App Store</span>
+                    </div>
+                    </a>
+                </div>
+            </div>
+    
+            <div class="cookie-card">
+                <span class="title">🎓 Conéctate y administra</span>
+                <p class="description">Bienvenido a GOE, el espacio donde estudiantes, docentes y directivos tienen todo a su alcance. Registra asistencias en segundos, accede a directorios actualizados y gestiona observadores estudiantiles de forma sencilla. Simplificamos la administración escolar para que puedas enfocarte en lo que realmente importa: la educación. ¡Explora una nueva forma de conectar y gestionar tu comunidad académica!<a href="#">Read cookies policies</a>. </p>
+            </div>
+        </div>
     </div>
+    
+    <script src="JS/script.js"></script>
 </body>
 </html>
-
-<!--https://layers.to/layers/clv0q7xjj005dky0hzjj7rhtb-->
