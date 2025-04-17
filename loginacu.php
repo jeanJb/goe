@@ -20,7 +20,7 @@ $valor = $sentencia->fetch(PDO::FETCH_OBJ);
 
 if ($valor === FALSE) {
     // Si no encuentra el documento, muestra la alerta y redirige
-    echo "<script> 
+    /* echo "<script> 
     Swal.fire({
         icon: 'error',
         title: 'Inicio no válido',
@@ -35,7 +35,8 @@ if ($valor === FALSE) {
     }).then(() => {
         window.location.href = 'acudientes.php?error=1';
     });
-    </script>";
+    </script>"; */
+    header('Location: acudientes.php?error=3');
     exit();
 } else {
     // Verificamos si la contraseña coincide
@@ -47,7 +48,7 @@ if ($valor === FALSE) {
         exit();
     } else {
         // Si la contraseña no coincide
-        echo "<script> 
+        /* echo "<script> 
         Swal.fire({
             icon: 'error',
             title: 'Inicio no válido',
@@ -62,7 +63,8 @@ if ($valor === FALSE) {
         }).then(() => {
             window.location.href = 'acudientes.php?error=2';
         });
-        </script>";
+        </script>"; */
+        header('Location: acudientes.php?error=2');
         exit();
     }
 }
