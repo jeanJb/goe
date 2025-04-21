@@ -1,49 +1,30 @@
-# GOE (Gestión de Observadores Estudiantil)
+# GOE - Gestión de Observadores Estudiantil
 
-Bienvenido al repositorio del proyecto GOE (Gestión de Observadores Estudiantil), desarrollado por DEVEXCEL. Este aplicativo web está diseñado para facilitar la gestión y organización de la observación estudiantil, mejorando la eficiencia en la gestión de información, la comunicación entre actores educativos y la toma de decisiones en instituciones educativas.
+GOE (Gestión de Observadores Estudiantil) es una aplicación web y móvil desarrollada con **PHP, MySQL y React Native** que permite la gestión de asistencias de estudiantes de manera eficiente. Cuenta con funcionalidades avanzadas de CRUD, autenticación por correo y sistema de notificaciones en tiempo real.
 
-## Tabla de Contenidos
+## Tecnologías Utilizadas
+- **Frontend Web:** HTML, CSS, JavaScript
+- **Backend Web:** PHP
+- **Base de Datos:** MySQL
+- **Autenticación:** Verificación por correo con enlace de activación
+- **Notificaciones:** Modal emergente con PHP y MySQL
+- **Aplicación Móvil:** React Native con conexión a la API REST
 
-- [Descripción](#descripción)
-- [Características](#características)
-- [Requisitos](#requisitos)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
-- [Contacto](#contacto)
+## Características Principales
+✅ **Registro y autenticación de usuarios** con verificación por correo electrónico  
+✅ **Gestión de asistencias** con filtrado dinámico por docente  
+✅ **CRUD** en la web y la app móvil con sincronización en tiempo real  
+✅ **Sistema de notificaciones** en modal emergente  
+✅ **API REST** en PHP para la integración con la app móvil  
+✅ **Implementación segura** con protección contra SQL Injection y uso recomendado de HTTPS  
+✅ **Escalabilidad**, con posibilidad de expandir el sistema con futuras mejoras
 
-## Descripción
-
-GOE es una aplicación web que centraliza la gestión de observaciones estudiantiles, permitiendo a las instituciones educativas registrar, actualizar, eliminar y gestionar datos de observadores y estudiantes. El sistema facilita la generación de reportes personalizados, el envío de correos electrónicos, la administración de asistencia y mejora la comunicación entre observadores, estudiantes, acudientes y autoridades educativas.
-
-## Características
-
-- **Gestión de Usuarios:** Registro y gestión de usuarios con roles como administradores, observadores, estudiantes, acudientes y personal de la rectoría o coordinación.
-- **Administración de Observadores:** Creación, edición, eliminación y desactivación de perfiles de observadores.
-- **Generación de Reportes:** Herramientas para generar reportes personalizados y predefinidos basados en datos de observación.
-- **Envío de Correos:** Funcionalidades integradas para enviar correos electrónicos automáticos o manuales.
-- **Administración de Asistencia:** Registro y gestión de la asistencia de estudiantes, con generación de reportes y notificaciones.
-- **Comunicación y Colaboración:** Facilita la comunicación entre los diferentes actores educativos.
-
-## Requisitos
-
-- Node.js (versión X.X.X o superior)
-- npm (versión X.X.X o superior)
-- Base de datos (e.g., MongoDB, MySQL)
-
-## Instalación
+## Instalación y Configuración
 
 1. **Clonar el repositorio:**
-Debes clonar este repositorio en tu maquina local para poder ejecutarlo:
-   
-         git clone https://github.com/devexcel/GOE.git
-
-2. **Instalar dependencias o librerias para python:**
-
-   Desbes instalar las dependencias asi como las siguientes librerias:"
-
-         pip install FLASK
-         pip install FLASK-MySQLdb
-         pip install MySQL
-   
+   ```bash
+   git clone https://github.com/SebasTechWolf/goes.git
+   cd goe
+2. **Configurar la base de datos:**
+-   Importar el archivo database.sql en MySQL
+-   Editar config.php con las credenciales de la base de datos
