@@ -62,7 +62,7 @@ Combina tecnologías modernas como React Native (con Expo y TypeScript) para la 
 
 2. **Instalar dependencias:**
    ```bash
-   npm start
+   npm install
    
 3. **Ejecutar el proyecto:**
    ```bash
