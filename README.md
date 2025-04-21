@@ -23,7 +23,7 @@ GOE (Gestión de Observadores Estudiantil) es una aplicación web y móvil desar
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com/SebasTechWolf/goes.git
+   git clone https://github.com/jeanJB/goe.git
    cd goe
 2. **Configurar la base de datos:**
 -   Importar el archivo database.sql en MySQL
