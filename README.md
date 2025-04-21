@@ -48,7 +48,8 @@ Combina tecnologías modernas como React Native (con Expo y TypeScript) para la 
 -   Importar el archivo database.sql en MySQL
 -   Editar config.php con las credenciales de la base de datos
 
-##📱 Construcción de la App Móvil con React Native
+## 📱 Construcción de la App Móvil con React Native
+
 ## Requisitos
 - NodeJS
 - Expo CLI (npm install -g expo-cli)
