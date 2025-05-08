@@ -2,31 +2,173 @@
 require '../ModeloDAO/UsuarioDao.php';
 require '../ModeloDTO/UsuarioDto.php';
 require '../Utilidades/conexion.php';
+require '../Utilidades/enviarCorreo.php'; // Archivo para enviar correos
 
 /* var_dump($_POST);
 die(); */
 //usuario
 
 if(isset($_POST['registro'])){
-$uDao = new UsuarioDao();
-$uDto = new UsuarioDto();
-$foto = "user.png";
-$uDto->setDocumento($_POST['documento']);
-$uDto->setRol($_POST['id_rol']);
-$uDto->setEmail($_POST['email']);
-$uDto->setClave($_POST['clave']);
-$uDto->setTD($_POST['tipo_doc']);
-$uDto->setNombre1($_POST['nombre1']);
-$uDto->setNombre2($_POST['nombre2']);
-$uDto->setApellido1($_POST['apellido1']);
-$uDto->setApellido2($_POST['apellido2']);
-$uDto->setTelefono($_POST['telefono']);
-$uDto->setDireccion($_POST['direccion']);
-$uDto->setFoto($_POST['foto'] ?? null);
-$uDto->setGrado($_POST['grado'] ?? null);
-$mensaje = $uDao->registrarUsuario($uDto);
+    $uDao = new UsuarioDao();
+    $uDto = new UsuarioDto();
+    $cnn = Conexion::getConexion();
 
-header("Location:../intro.php?mensaje=".$mensaje);
+    $documento = $_POST['documento'];
+    $email = $_POST['email'];
+    $clave = $_POST['clave']; // Se encripta en el DAO
+    $token = bin2hex(random_bytes(50)); // Generar token único
+    $dominio_valido = '@ctjfr.edu.co';
+
+    // Validar que el correo tenga el dominio correcto
+    if (!str_ends_with($email, $dominio_valido)) {
+        header("Location: ../intro.php?status=error&message=El correo debe ser institucional (@ctjfr.edu.co)");
+        exit();
+    }
+
+    // Verificar si el correo ya existe
+    $stmt = $cnn->prepare("SELECT COUNT(*) FROM usuario WHERE email = :email OR documento = :documento");
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':documento', $documento);
+    $stmt->execute();
+    if ($stmt->fetchColumn() > 0) {
+        header("Location: ../intro.php?status=error&message=El correoo o el documento ya está registrado");
+        exit();
+    }
+
+    $foto = "user.png";
+    // Asignar valores al DTO
+    $uDto->setDocumento($documento);
+    $uDto->setRol($_POST['id_rol']);
+    $uDto->setEmail($email);
+    $uDto->setClave($clave);
+    $uDto->setTD($_POST['tipo_doc']);
+    $uDto->setNombre1($_POST['nombre1']);
+    $uDto->setNombre2($_POST['nombre2']);
+    $uDto->setApellido1($_POST['apellido1']);
+    $uDto->setApellido2($_POST['apellido2']);
+    $uDto->setTelefono($_POST['telefono']);
+    $uDto->setDireccion($_POST['direccion']);
+    $uDto->setFoto($foto);
+    $uDto->setGrado($_POST['grado'] ?? null);
+    $uDto->setActivo(0); // Usuario inactivo
+    $uDto->setTokenActivacion($token);
+
+    $mensaje = $uDao->registrarUsuario($uDto);
+
+    $enlace = "http://localhost/goes/activar.php?token=$token";
+    $asunto = "¡Activa tu cuenta en GOE!";
+    $mesage = "
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Activación de Cuenta</title>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #EAF0F6;
+        margin: 0;
+        padding: 0;
+        }
+        .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 20px auto;
+        background:rgb(232, 234, 237);
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        }
+        .header {
+        text-align: center;
+        padding: 10px;
+        }
+        .header h2 {
+        color: #1E3A8A;
+        margin-bottom: 10px;
+        }
+        .content {
+        text-align: center;
+        padding: 20px;
+        }
+        .content p {
+        font-size: 16px;
+        color: #333;
+        margin: 10px 0;
+        }
+        .activation-box {
+        background: #e5f3ff;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+        }
+        .button {
+        display: inline-block;
+        padding: 12px 20px;
+        background: #2563EB;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0;
+        }
+        .button:hover {
+        background: #1E40AF;
+        }
+        .footer {
+        font-size: 12px;
+        color: #6B7280;
+        margin-top: 20px;
+        }
+        .footer a {
+        color: #2563EB;
+        text-decoration: none;
+        }
+        img {
+        width: 200px;
+        margin: 0 auto;
+        }
+    </style>
+    </head>
+    <body>
+    <div class='container'>
+        <img src='https://i.postimg.cc/RV8Bcn4z/goe03.png' alt=''>
+        <div class='header'>
+        <h2>¡Bienvenido a GOE!</h2>
+        </div>
+
+        <div class='content'>
+        <p>Gracias por registrarte. Para completar tu registro y activar tu cuenta, haz clic en el botón de abajo.</p>
+
+        <div class='activation-box'>
+            <a href='$enlace' class='button'>Activar Cuenta</a>
+            <p>O copia y pega este enlace en tu navegador:</p>
+            <p><a href='$enlace'>$enlace</a></p>
+        </div>
+
+        <p>Si no solicitaste este registro, puedes ignorar este mensaje.</p>
+
+        <div class='footer'>
+            <p>Si tienes problemas, contáctanos en <a href='mailto:soporte@goe.com'>soporte@goe.com</a></p>
+            <p>© 2025 GOE. Todos los derechos reservados.</p>
+        </div>
+        </div>
+    </div>
+    </body>
+    </html>
+    ";
+
+    // Enviar el correo
+    if (enviarCorreo($email, $asunto, $mesage)) {
+        header("Location: ../intro.php?status=success&message=Registro exitoso. Revisa tu correo para activar tu cuenta.");
+    } else {
+        header("Location: ../intro.php?status=error&message=Error al enviar el correo.");
+    }
+    exit();
 
 }
 else if ($_GET['id']!=NULL){

@@ -7,24 +7,26 @@ class UsuarioDao{
     $mensaje = "";
 
     try {
-        $query = $cnn->prepare("INSERT INTO usuario values(?,?,?, aes_encrypt(?,'SENA'),?,?,?,?,?,?,?,?,?,?,?,?)");
-        $query->bindParam(1, $usuarioDto->getDocumento());
-        $query->bindParam(2, $usuarioDto->getRol());
-        $query->bindParam(3, $usuarioDto->getEmail());
-        $query->bindParam(4, $usuarioDto->getClave());
-        $query->bindParam(5, $usuarioDto->getTD());
-        $query->bindParam(6, $usuarioDto->getNombre1());
-        $query->bindParam(7, $usuarioDto->getNombre2());
-        $query->bindParam(8, $usuarioDto->getApellido1());
-        $query->bindParam(9, $usuarioDto->getApellido2());
-        $query->bindParam(10, $usuarioDto->getTelefono());
-        $query->bindParam(11, $usuarioDto->getDireccion());
-        $query->bindParam(12, $usuarioDto->getFoto()); 
-        $query->bindParam(13, $grado, PDO::PARAM_NULL);
-        $query->bindParam(14, '');
-        $query->bindParam(15, '');
-        $query->bindParam(16, '');
-        $query->execute();
+        $queryUsuario = $cnn->prepare("INSERT INTO usuario values(?,?,?, aes_encrypt(?,'SENA'),?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $queryUsuario->bindParam(1, $usuarioDto->getDocumento());
+        $queryUsuario->bindParam(2, $usuarioDto->getRol());
+        $queryUsuario->bindParam(3, $usuarioDto->getEmail());            
+        $queryUsuario->bindParam(4, $usuarioDto->getClave());
+        $queryUsuario->bindParam(5, $usuarioDto->getTD());
+        $queryUsuario->bindParam(6, $usuarioDto->getNombre1());
+        $queryUsuario->bindParam(7, $usuarioDto->getNombre2());            
+        $queryUsuario->bindParam(8, $usuarioDto->getApellido1());
+        $queryUsuario->bindParam(9, $usuarioDto->getApellido2());
+        $queryUsuario->bindParam(10, $usuarioDto->getTelefono());
+        $queryUsuario->bindParam(11, $usuarioDto->getDireccion());            
+        $queryUsuario->bindParam(12, $usuarioDto->getFoto()); 
+        $queryUsuario->bindParam(13, $grado, PDO::PARAM_NULL); 
+        $queryUsuario->bindParam(14, $reset_token, PDO::PARAM_NULL);
+        $queryUsuario->bindParam(15, $token_expiration, PDO::PARAM_NULL);
+        $queryUsuario->bindParam(16, $token_sesion, PDO::PARAM_NULL);            
+        $queryUsuario->bindParam(17, $usuarioDto->getActivo());
+        $queryUsuario->bindParam(18, $usuarioDto->getTokenActivacion());
+        $queryUsuario->execute();
         
         $mensaje= "Registro exitoso";
     } catch (Exception  $ex) {
