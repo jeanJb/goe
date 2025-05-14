@@ -244,5 +244,43 @@ $u = $uDao->user($_SESSION['documento']);
     </div>
     
     <script src="JS/script.js"></script>
+        <!-- Contenedor para las alertas -->
+    <div id="alert-container"></div>
+    <script>
+        // Función para mostrar alertas
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+
+            // Crear el elemento de la alerta
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `
+                ${message}
+                <span class="close-btn" onclick="this.parentElement.classList.remove('show')">&times;</span>
+            `;
+
+            // Agregar la alerta al contenedor
+            alertContainer.appendChild(alertDiv);
+
+            // Mostrar la alerta
+            setTimeout(() => alertDiv.classList.add('show'), 100);
+
+            // Ocultar la alerta después de 5 segundos
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 500); // Eliminar después de la animación
+            }, 5000);
+        }
+
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        const message = urlParams.get('message');
+
+        // Mostrar alerta según el estado
+        if (status && message) {
+            showAlert(decodeURIComponent(message), status);
+        }
+    </script>
 </body>
 </html>
