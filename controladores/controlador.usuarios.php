@@ -31,7 +31,7 @@ if(isset($_POST['registro'])){
     $stmt->bindParam(':documento', $documento);
     $stmt->execute();
     if ($stmt->fetchColumn() > 0) {
-        header("Location: ../intro.php?status=error&message=El correoo o el documento ya está registrado");
+        header("Location: ../intro.php?status=error&message=El correo o el documento ya está registrado");
         exit();
     }
 
